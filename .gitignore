@@ -7,6 +7,8 @@
 
 # dependencies
 /node_modules
+/functions/node_modules
+/functions/node_modules
 
 # IDEs and editors
 /.idea
@@ -33,6 +35,9 @@ npm-debug.log
 yarn-error.log
 testem.log
 /typings
+.editorconfig
+.firebaserc
+/dist
 
 # System Files
 .DS_Store
