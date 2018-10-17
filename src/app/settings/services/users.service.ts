@@ -7,6 +7,8 @@ import { tap } from 'rxjs/operators';
 import { NgFireService } from '@shared/services';
 // Shared Components
 import { AddUserDialogComponent } from '../components/add-user-dialog/add-user-dialog.component';
+// Module Services
+import { SettingsTableService } from '../services/settings-table.service';
 
 @Injectable()
 export class UsersService {
@@ -35,6 +37,7 @@ export class UsersService {
 
     constructor(
         private matDialog: MatDialog,
-        private ngFireService: NgFireService
+        private ngFireService: NgFireService,
+        private settingsTableService: SettingsTableService
     ) { }
 }
