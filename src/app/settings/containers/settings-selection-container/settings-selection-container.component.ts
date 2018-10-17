@@ -7,7 +7,7 @@ import { LayoutService } from '../../../layout/services/layout.service';
     selector: 'app-settings-selection-container',
     template: `
         <mat-list>
-            <mat-list-item>
+            <mat-list-item routerLink="/app/settings/users">
                 <mat-icon matListIcon>group</mat-icon>
                 <h3 matLine>Users</h3>
             </mat-list-item>
