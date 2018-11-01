@@ -11,8 +11,7 @@ import { Component, Input } from '@angular/core';
             [matTooltipPosition]="matTooltipPosition"
             color="primary"
             mat-button
-            mat-icon-button
-            mat-raised-button>
+            mat-icon-button>
             <mat-icon>{{ icon }}</mat-icon>
         </button>
     `,

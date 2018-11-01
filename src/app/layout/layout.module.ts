@@ -21,6 +21,7 @@ import { LayoutNavItemComponent } from './components/layout-nav-item/layout-nav-
                 { path: '', redirectTo: 'home', pathMatch: 'full' },
                 { path: 'home', loadChildren: '../home/home.module#HomeModule' },
                 { path: 'settings', loadChildren: '../settings/settings.module#SettingsModule' },
+                { path: '**', redirectTo: 'home', pathMatch: 'full' },
             ]}
         ])
     ],
