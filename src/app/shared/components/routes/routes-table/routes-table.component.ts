@@ -1,5 +1,5 @@
 // Angular
-import { Component, Input, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { MatSort } from '@angular/material';
 
 @Component({
@@ -8,39 +8,44 @@ import { MatSort } from '@angular/material';
         <div id="container">
             <mat-table #table [dataSource]="this.dataSource" matSort>
 
-                <ng-container matColumnDef="rate">
-                    <mat-header-cell *matHeaderCellDef mat-header-cell> Rate </mat-header-cell>
-                    <mat-cell *matCellDef="let route" mat-cell> {{ route.rate }} </mat-cell>
-                </ng-container>
-
                 <ng-container matColumnDef="routeNumber">
                     <mat-header-cell *matHeaderCellDef mat-header-cell> Route No. </mat-header-cell>
                     <mat-cell *matCellDef="let route" mat-cell> {{ route.routeNumber }} </mat-cell>
                 </ng-container>
 
-                <ng-container matColumnDef="refNumber">
-                    <mat-header-cell *matHeaderCellDef mat-header-cell> Ref No. </mat-header-cell>
-                    <mat-cell *matCellDef="let route" mat-cell> {{ route.refNumber }} </mat-cell>
+                <ng-container matColumnDef="rate">
+                    <mat-header-cell *matHeaderCellDef mat-header-cell> Rate </mat-header-cell>
+                    <mat-cell *matCellDef="let route" mat-cell> {{ route.rate.name }} </mat-cell>
                 </ng-container>
 
-                <ng-container matColumnDef="truckNumber">
-                    <mat-header-cell *matHeaderCellDef mat-header-cell> Truck No. </mat-header-cell>
-                    <mat-cell *matCellDef="let route" mat-cell> {{ route.truckNumber }} </mat-cell>
+                <ng-container matColumnDef="refNumber1">
+                    <mat-header-cell *matHeaderCellDef mat-header-cell> Ref. No. 1 </mat-header-cell>
+                    <mat-cell *matCellDef="let route" mat-cell> {{ route.refNumber1 }} </mat-cell>
                 </ng-container>
 
-                <ng-container matColumnDef="trailerNumber">
-                    <mat-header-cell *matHeaderCellDef mat-header-cell> Trailer No. </mat-header-cell>
-                    <mat-cell *matCellDef="let route" mat-cell> {{ route.trailerNumber }} </mat-cell>
+                <ng-container matColumnDef="refNumber2">
+                    <mat-header-cell *matHeaderCellDef mat-header-cell> Ref. No. 2 </mat-header-cell>
+                    <mat-cell *matCellDef="let route" mat-cell> {{ route.refNumber2 }} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="refNumber3">
+                    <mat-header-cell *matHeaderCellDef mat-header-cell> Ref. No. 3 </mat-header-cell>
+                    <mat-cell *matCellDef="let route" mat-cell> {{ route.refNumber3 }} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="truck">
+                    <mat-header-cell *matHeaderCellDef mat-header-cell> Truck </mat-header-cell>
+                    <mat-cell *matCellDef="let route" mat-cell> {{ route.truck.name }} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="trailer">
+                    <mat-header-cell *matHeaderCellDef mat-header-cell> Trailer </mat-header-cell>
+                    <mat-cell *matCellDef="let route" mat-cell> {{ route.trailer.name }} </mat-cell>
                 </ng-container>
 
                 <ng-container matColumnDef="driver">
                     <mat-header-cell *matHeaderCellDef mat-header-cell> Driver </mat-header-cell>
-                    <mat-cell *matCellDef="let route" mat-cell> {{ route.driver }} </mat-cell>
-                </ng-container>
-
-                <ng-container matColumnDef="loadRef">
-                    <mat-header-cell *matHeaderCellDef mat-header-cell> Load Ref. </mat-header-cell>
-                    <mat-cell *matCellDef="let route" mat-cell> {{ route.loadRef }} </mat-cell>
+                    <mat-cell *matCellDef="let route" mat-cell> {{ route.driver.name }} </mat-cell>
                 </ng-container>
 
                 <ng-container matColumnDef="temp">
@@ -50,12 +55,18 @@ import { MatSort } from '@angular/material';
 
                 <ng-container matColumnDef="origin">
                     <mat-header-cell *matHeaderCellDef mat-header-cell> Origin </mat-header-cell>
-                    <mat-cell *matCellDef="let route" mat-cell> {{ route.origin }} </mat-cell>
+                    <mat-cell *matCellDef="let route" class="block" mat-cell>
+                        <span class="block">{{ route.origin.city }},</span>
+                        <span class="block uppercase">{{ route.origin.state }}</span>
+                    </mat-cell>
                 </ng-container>
 
                 <ng-container matColumnDef="destination">
                     <mat-header-cell *matHeaderCellDef mat-header-cell> Destination </mat-header-cell>
-                    <mat-cell *matCellDef="let route" mat-cell> {{ route.destination }} </mat-cell>
+                    <mat-cell *matCellDef="let route" class="block" mat-cell>
+                        <span class="block">{{ route.destination.city }},</span>
+                        <span class="block uppercase">{{ route.destination.state }}</span>
+                    </mat-cell>
                 </ng-container>
 
                 <ng-container matColumnDef="miles">
@@ -68,9 +79,9 @@ import { MatSort } from '@angular/material';
                     <mat-cell *matCellDef="let route" mat-cell> {{ route.noOfStops }} </mat-cell>
                 </ng-container>
 
-                <ng-container matColumnDef="pickup">
-                    <mat-header-cell *matHeaderCellDef mat-header-cell> Pick-up </mat-header-cell>
-                    <mat-cell *matCellDef="let route" mat-cell> {{ route.pickup }} </mat-cell>
+                <ng-container matColumnDef="pickups">
+                    <mat-header-cell *matHeaderCellDef mat-header-cell> Pick-ups </mat-header-cell>
+                    <mat-cell *matCellDef="let route" mat-cell> {{ route.pickups }} </mat-cell>
                 </ng-container>
 
                 <ng-container matColumnDef="loadDate">
@@ -78,18 +89,16 @@ import { MatSort } from '@angular/material';
                     <mat-cell *matCellDef="let route" mat-cell> {{ route.loadDate }} </mat-cell>
                 </ng-container>
 
-                <ng-container matColumnDef="weekNumber">
-                    <mat-header-cell *matHeaderCellDef mat-header-cell> Week No. </mat-header-cell>
-                    <mat-cell *matCellDef="let route" mat-cell> {{ route.weekNumber }} </mat-cell>
-                </ng-container>
-
-                <ng-container matColumnDef="confirmed">
-                    <mat-header-cell *matHeaderCellDef mat-header-cell> Confirmed </mat-header-cell>
-                    <mat-cell *matCellDef="let route" mat-cell> {{ route.confirmed }} </mat-cell>
+                <ng-container matColumnDef="confirmation">
+                    <mat-header-cell *matHeaderCellDef mat-header-cell> Confirmation </mat-header-cell>
+                    <mat-cell *matCellDef="let route" mat-cell>
+                        <div>{{ route.confirmation.user ? route.confirmation.user.name : null }}</div>
+                        <div>{{ route.confirmation.date ? (route.confirmation.date | date: 'short') : null }}</div>
+                    </mat-cell>
                 </ng-container>
 
                 <mat-header-row *matHeaderRowDef="this.displayedColumns"></mat-header-row>
-                <mat-row *matRowDef="let route; columns: this.displayedColumns;"></mat-row>
+                <mat-row *matRowDef="let route; columns: this.displayedColumns;" (click)="edit.emit(route)"></mat-row>
             </mat-table>
         </div>
     `,
@@ -117,10 +126,19 @@ import { MatSort } from '@angular/material';
         mat-row:hover {
             background: #0097a712;
         }
+        .block {
+            display: block;
+        }
+        .uppercase {
+            text-transform: uppercase;
+        }
     `]
 })
 export class RoutesTableComponent {
+    @Input() displayedColumns: any[];
     @Input() dataSource: any[];
+
+    @Output() edit = new EventEmitter();
 
     @ViewChild(MatSort) matSort: MatSort;
 }

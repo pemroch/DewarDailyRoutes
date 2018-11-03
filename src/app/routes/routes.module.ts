@@ -10,7 +10,9 @@ import { RoutesLayoutContainerComponent } from './containers/routes-layout-conta
         CommonModule,
         RouterModule.forChild([
             { path: '', component: RoutesLayoutContainerComponent, children: [
-                { path: 'active', loadChildren: './users/users.module#UsersModule' }
+                { path: '', redirectTo: 'active-routes', pathMatch: 'full' },
+                { path: 'active-routes', loadChildren: './active-routes/active-routes.module#ActiveRoutesModule' },
+                { path: '**', redirectTo: 'active-routes', pathMatch: 'full' },
             ]}
         ])
     ],

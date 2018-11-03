@@ -18,9 +18,9 @@ import { SettingsSelectionComponent } from './components/settings-selection/sett
         RouterModule.forChild([
             { path: '', component: SettingsLayoutContainerComponent, children: [
                 { path: '', component: SettingsSelectionComponent },
-                { path: 'users', loadChildren: './users/users.module#UsersModule' },
-                { path: 'drivers', loadChildren: './drivers/drivers.module#DriversModule' },
-                { path: 'rates', loadChildren: './rates/rates.module#RatesModule' }
+                { path: 'users', loadChildren: './user-settings/user-settings.module#UserSettingsModule' },
+                { path: 'drivers', loadChildren: './driver-settings/driver-settings.module#DriverSettingsModule' },
+                { path: 'rates', loadChildren: './rate-settings/rate-settings.module#RateSettingsModule' }
             ]}
         ])
     ],

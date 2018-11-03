@@ -22,6 +22,8 @@ import { Component, Input } from '@angular/core';
             place-items: center;
         }
         #text-container {
+            width: 100%;
+            position: absolute;
             text-align: center;
         }
         #header-text {
