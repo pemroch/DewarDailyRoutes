@@ -1,32 +1,32 @@
 // Modules
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatDividerModule, MatIconModule, MatListModule } from '@angular/material';
+import { FormsModule } from '@angular/forms';
+import { MatIconModule, MatListModule } from '@angular/material';
 import { RouterModule } from '@angular/router';
 // Module Containers
-import { SettingsSelectionContainerComponent } from './containers/settings-selection-container/settings-selection-container.component';
-import { UsersContainerComponent } from './containers/users-container/users-container.component';
-import { DriversContainerComponent } from './containers/drivers-container/drivers-container.component';
-import { SettingsTableComponent } from './components/settings-table/settings-table.component';
-import { SettingsTableContainerComponent } from './containers/settings-table-container/settings-table-container.component';
+import { SettingsLayoutContainerComponent } from './containers/settings-layout-container/settings-layout-container.component';
 // Module Components
+import { SettingsSelectionComponent } from './components/settings-selection/settings-selection.component';
 
 @NgModule({
     imports: [
         CommonModule,
-        MatDividerModule,
+        FormsModule,
         MatIconModule,
         MatListModule,
         RouterModule.forChild([
-            { path: '', component: SettingsSelectionContainerComponent }
-        ]),
+            { path: '', component: SettingsLayoutContainerComponent, children: [
+                { path: '', component: SettingsSelectionComponent },
+                { path: 'users', loadChildren: './user-settings/user-settings.module#UserSettingsModule' },
+                { path: 'drivers', loadChildren: './driver-settings/driver-settings.module#DriverSettingsModule' },
+                { path: 'rates', loadChildren: './rate-settings/rate-settings.module#RateSettingsModule' }
+            ]}
+        ])
     ],
     declarations: [
-        SettingsSelectionContainerComponent,
-        UsersContainerComponent,
-        DriversContainerComponent,
-        SettingsTableComponent,
-        SettingsTableContainerComponent
+        SettingsSelectionComponent,
+        SettingsLayoutContainerComponent
     ]
 })
 export class SettingsModule { }

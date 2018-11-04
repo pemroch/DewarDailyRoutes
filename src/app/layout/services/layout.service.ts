@@ -11,9 +11,8 @@ export class LayoutService {
     toolbarTitle$ = new BehaviorSubject<string>('');
     sidenavOpened$ = new BehaviorSubject<boolean>(false);
 
-    navigate(route: string, title: string) {
+    navigate(route: string) {
         this.sidenavOpened$.next(false);
-        this.toolbarTitle$.next(title);
         this.router.navigate(['app', route]);
     }
 

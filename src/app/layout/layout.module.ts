@@ -20,7 +20,9 @@ import { LayoutNavItemComponent } from './components/layout-nav-item/layout-nav-
             { path: '', component: LayoutContainerComponent, children: [
                 { path: '', redirectTo: 'home', pathMatch: 'full' },
                 { path: 'home', loadChildren: '../home/home.module#HomeModule' },
+                { path: 'routes', loadChildren: '../routes/routes.module#RoutesModule' },
                 { path: 'settings', loadChildren: '../settings/settings.module#SettingsModule' },
+                { path: '**', redirectTo: 'home', pathMatch: 'full' },
             ]}
         ])
     ],

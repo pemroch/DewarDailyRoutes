@@ -1,5 +1,7 @@
 // Angular
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+// Shared Services
+import { LayoutService } from '@layout/services';
 
 @Component({
     selector: 'app-home-container',
@@ -24,4 +26,10 @@ import { Component } from '@angular/core';
     `]
 })
 
-export class HomeContainerComponent { }
+export class HomeContainerComponent  implements OnInit {
+    ngOnInit() {
+        this.layoutService.toolbarTitle$.next('');
+    }
+
+    constructor(private layoutService: LayoutService) { }
+}
