@@ -14,7 +14,8 @@ import { RateSettingsDialogService } from '../../services/rate-settings-dialog.s
             (add)="this.rateSettingsDialogService.add(rate)"
             (save)="this.rateSettingsDialogService.save(rate)"
         ></app-rate-settings-dialog>
-    `
+    `,
+    providers: [RateSettingsDialogService]
 })
 export class RateSettingsDialogContainerComponent {
     constructor(

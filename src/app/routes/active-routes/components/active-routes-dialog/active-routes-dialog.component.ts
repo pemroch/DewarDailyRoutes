@@ -2,37 +2,45 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { NgForm } from '@angular/forms';
 // Shared Models
-import { PickUp, Rate, Route, RouteNumber, Truck, Trailer } from '@shared/models';
+import { Customer, Location, PickUpItem, Rate, Route, Truck, Trailer } from '@shared/models';
 
 @Component({
     selector: 'app-active-routes-dialog',
     template: `
         <form #form="ngForm">
-            <p class="mat-body-1 section-header">Rate</p>
+            <p class="mat-body-1 section-header">Load Date-Load Location</p>
             <div class="flex-2-container">
                 <mat-form-field class="flex-item">
-                    <mat-select
-                        [(ngModel)]="this.route.rate"
-                        [disabled]="this.pending"
-                        name="rate"
-                        placeholder="Rate"
-                    >
-                        <mat-option *ngFor="let rate of this.rates" [value]="rate">
-                            {{ rate.name }}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
-                <mat-form-field class="flex-item">
                     <input
-                        [(ngModel)]="this.route.rate.ratePerMile"
-                        [disabled]="this.pending"
-                        type="number"
-                        name="ratePerMile"
-                        placeholder="Rate/Mile"
-                        autocorrect="off"
-                        autocomplete="off"
+                        [(ngModel)]="this.route.loadDate"
+                        [matDatepicker]="loadDate"
+                        class="route-date-picker"
+                        name="loadDate"
+                        placeholder="Load Date"
+                        disabled
                         matInput
                     />
+                    <mat-datepicker-toggle matSuffix [for]="loadDate"></mat-datepicker-toggle>
+                    <mat-datepicker #loadDate disabled="false"></mat-datepicker>
+                    <span matSuffix>
+                        <button (click)="clearDate.emit()" [disabled]="this.pending || !route.loadDate" color="warn" mat-icon-button>
+                            <mat-icon>clear</mat-icon>
+                        </button>
+                    </span>
+                </mat-form-field>
+
+                <mat-form-field class="flex-item">
+                    <mat-select
+                        [(ngModel)]="this.route.loadLocation"
+                        [disabled]="this.pending"
+                        class="capitalize"
+                        name="loadLocation"
+                        placeholder="Load Location"
+                    >
+                        <mat-option *ngFor="let location of this.locations" [value]="location" class="capitalize">
+                            {{ location.name }}
+                        </mat-option>
+                    </mat-select>
                 </mat-form-field>
             </div>
 
@@ -95,25 +103,7 @@ import { PickUp, Rate, Route, RouteNumber, Truck, Trailer } from '@shared/models
                 </mat-form-field>
             </div>
 
-            <p class="mat-body-1 section-header">Load Date-Origin-Destination</p>
-            <mat-form-field id="load-date">
-                <input
-                    [(ngModel)]="this.route.loadDate"
-                    [matDatepicker]="loadDate"
-                    class="route-date-picker"
-                    name="loadDate"
-                    placeholder="Load Date"
-                    disabled
-                    matInput
-                />
-                <mat-datepicker-toggle matSuffix [for]="loadDate"></mat-datepicker-toggle>
-                <mat-datepicker #loadDate disabled="false"></mat-datepicker>
-                <span matSuffix>
-                    <button (click)="clearDate.emit()" [disabled]="this.pending || !route.loadDate" color="warn" mat-icon-button>
-                        <mat-icon>clear</mat-icon>
-                    </button>
-                </span>
-            </mat-form-field>
+            <p class="mat-body-1 section-header">Origin-Destination</p>
             <div class="flex-2-container">
                 <mat-form-field class="flex-item">
                     <input
@@ -174,7 +164,34 @@ import { PickUp, Rate, Route, RouteNumber, Truck, Trailer } from '@shared/models
                 </mat-form-field>
             </div>
 
-            <p class="mat-body-1 section-header">Miles-Stops</p>
+            <p class="mat-body-1 section-header">Rate-Miles-Stops</p>
+            <div class="flex-2-container">
+                <mat-form-field class="flex-item">
+                    <mat-select
+                        [(ngModel)]="this.route.rate"
+                        [disabled]="this.pending"
+                        name="rate"
+                        placeholder="Rate"
+                    >
+                        <mat-option *ngFor="let rate of this.rates" [value]="rate">
+                            {{ rate.name }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field class="flex-item">
+                    <input
+                        [(ngModel)]="this.route.rate.ratePerMile"
+                        [disabled]="this.pending"
+                        type="number"
+                        name="ratePerMile"
+                        placeholder="Rate/Mile"
+                        autocorrect="off"
+                        autocomplete="off"
+                        matInput
+                    />
+                </mat-form-field>
+            </div>
+
             <div class="flex-2-container">
                 <mat-form-field class="flex-item">
                     <input
@@ -191,7 +208,9 @@ import { PickUp, Rate, Route, RouteNumber, Truck, Trailer } from '@shared/models
 
                 <mat-form-field class="flex-item">
                     <input
+                        #noOfStopsRef
                         [(ngModel)]="this.route.noOfStops"
+                        (ngModelChange)="this.setStops.emit(noOfStopsRef.value)"
                         [disabled]="this.pending"
                         type="number"
                         name="noOfStops"
@@ -203,14 +222,51 @@ import { PickUp, Rate, Route, RouteNumber, Truck, Trailer } from '@shared/models
                 </mat-form-field>
             </div>
 
-            <p class="mat-body-1 section-header">Pick-ups</p>
-            <ng-container *ngFor="let pickup of pickUps">
+            <mat-accordion>
+                <mat-expansion-panel>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>Rate/Drop</mat-panel-title>
+                    </mat-expansion-panel-header>
+
+                    <ng-container *ngFor="let drop of this.route.ratePerDrop; let i=index">
+                        <mat-form-field class="flex-100">
+                            <input
+                                [(ngModel)]="drop.rate"
+                                [disabled]="this.pending"
+                                type="number"
+                                name="{{ i }}"
+                                placeholder="Stop {{ drop.stop + 1 }}"
+                                autocorrect="off"
+                                autocomplete="off"
+                                matInput
+                            />
+                        </mat-form-field>
+                    </ng-container>
+
+                </mat-expansion-panel>
+            </mat-accordion>
+
+            <p class="mat-body-1 section-header">Customers</p>
+            <ng-container *ngFor="let customer of customers">
                 <mat-checkbox
-                    [(ngModel)]="this.route.pickUps[pickup.id]"
+                    [(ngModel)]="this.route.customers[customer.id]"
                     [disabled]="this.pending"
-                    name="confirmation"
+                    name="{{ customer.id }}"
+                    class="capitalize"
                 >
-                    {{ pickup.name }}
+                    {{ customer.name }}
+                </mat-checkbox>
+            </ng-container>
+
+            <p class="mat-body-1 section-header">Pick-Ups</p>
+            <ng-container *ngFor="let pickUpItem of pickUpItems">
+                <mat-checkbox
+                    [(ngModel)]="this.route.pickUpItems[pickUpItem.id]"
+                    [disabled]="this.pending"
+                    name="{{ pickUpItem.id }}"
+                    class="capitalize"
+                >
+                    {{ pickUpItem.name }}
                 </mat-checkbox>
             </ng-container>
 
@@ -346,7 +402,10 @@ import { PickUp, Rate, Route, RouteNumber, Truck, Trailer } from '@shared/models
             display: flex;
             justify-content: space-between;
         }
-        #load-date,
+        .flex-100 {
+            width: 100%;
+        }
+        #flex-48,
         .flex-2-container > .flex-item {
             width: 48%;
         }
@@ -364,16 +423,19 @@ export class ActiveRoutesDialogComponent {
 
     @Input() pending: boolean;
     @Input() error: string;
+
     @Input() route: Route;
-    @Input() rates: Rate[];
-    @Input() routeNumber: RouteNumber;
+    @Input() states: string[];
+    @Input() drivers: Trailer[];
     @Input() trucks: Truck[];
     @Input() trailers: Trailer[];
-    @Input() drivers: Trailer[];
-    @Input() pickUps: PickUp[];
-    @Input() states: string[];
+    @Input() rates: Rate[];
+    @Input() locations: Location[];
+    @Input() customers: Customer[];
+    @Input() pickUpItems: PickUpItem[];
 
     @Output() add = new EventEmitter();
     @Output() save = new EventEmitter();
     @Output() clearDate = new EventEmitter();
+    @Output() setStops = new EventEmitter();
 }

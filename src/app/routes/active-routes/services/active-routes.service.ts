@@ -5,8 +5,6 @@ import { MatDialog, MatTableDataSource } from '@angular/material';
 import { take, tap } from 'rxjs/operators';
 // Shared Services
 import { NgFireService } from '@shared/services';
-// Shared Models
-import { RouteNumber } from '@shared/models';
 // Module Components
 import {
     ActiveRoutesDialogContainerComponent
@@ -27,7 +25,7 @@ export class ActiveRoutesService {
         'destination',
         'miles',
         'noOfStops',
-        'pickups',
+        'pickUpItems',
         'loadDate',
         'confirmation'
     ];
@@ -37,29 +35,22 @@ export class ActiveRoutesService {
     );
 
     addRoute() {
-        this.ngFireService.loadDocument('routeNumber', 'route').pipe(
-            take(1)
-        ).toPromise()
-        .then((route: RouteNumber) => {
-            const month = new Date().getMonth() + 1;
-            this.matDialog.open(ActiveRoutesDialogContainerComponent, {
-                data: {
-                    rate: {},
-                    routeNumber: {
-                        month: month,
-                        number: route.number,
-                    },
-                    origin: {},
-                    destination: {},
-                    confirmation: {
-                        user: null,
-                        date: null,
-                        eta: null
-                    }
-                },
-                width: '90%',
-                height: '90%'
-            });
+        this.matDialog.open(ActiveRoutesDialogContainerComponent, {
+            data: {
+                rate: {},
+                ratePerDrop: [],
+                customers: [],
+                pickUpItems: [],
+                origin: {},
+                destination: {},
+                confirmation: {
+                    user: null,
+                    date: null,
+                    eta: null
+                }
+            },
+            width: '90%',
+            height: '90%'
         });
     }
 

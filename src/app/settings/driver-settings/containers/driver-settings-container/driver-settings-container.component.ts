@@ -19,7 +19,7 @@ import { DriverSettingsService } from '../../services/driver-settings.service';
                 header-btn-left
             ></app-header-btn>
             <app-header-btn
-                (click)="this.driverSettingsService.addDriver()"
+                (click)="this.driverSettingsService.add()"
                 icon="add"
                 toolTip="Add Driver"
                 matTooltipPosition="before"
@@ -33,7 +33,8 @@ import { DriverSettingsService } from '../../services/driver-settings.service';
             [dataSource]="this.driverSettingsService.dataSource"
             (edit)="this.driverSettingsService.edit($event)"
         ></app-settings-table>
-    `
+    `,
+    providers: [DriverSettingsService]
 })
 export class DriverSettingsContainerComponent implements OnInit, AfterViewInit, OnDestroy {
     dataSourceSubscription: Subscription;
@@ -52,5 +53,5 @@ export class DriverSettingsContainerComponent implements OnInit, AfterViewInit, 
         this.dataSourceSubscription.unsubscribe();
     }
 
-    constructor(private driverSettingsService: DriverSettingsService) { }
+    constructor(public driverSettingsService: DriverSettingsService) { }
 }

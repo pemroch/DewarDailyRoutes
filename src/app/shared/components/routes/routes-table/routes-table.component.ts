@@ -79,9 +79,9 @@ import { MatSort } from '@angular/material';
                     <mat-cell *matCellDef="let route" mat-cell> {{ route.noOfStops }} </mat-cell>
                 </ng-container>
 
-                <ng-container matColumnDef="pickups">
-                    <mat-header-cell *matHeaderCellDef mat-header-cell> Pick-ups </mat-header-cell>
-                    <mat-cell *matCellDef="let route" mat-cell> {{ route.pickups }} </mat-cell>
+                <ng-container matColumnDef="pickUpItems">
+                    <mat-header-cell *matHeaderCellDef mat-header-cell> Pick-Up Items </mat-header-cell>
+                    <mat-cell *matCellDef="let route" mat-cell> {{ route.pickUpItems }} </mat-cell>
                 </ng-container>
 
                 <ng-container matColumnDef="loadDate">

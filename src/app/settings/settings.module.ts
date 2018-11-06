@@ -20,7 +20,12 @@ import { SettingsSelectionComponent } from './components/settings-selection/sett
                 { path: '', component: SettingsSelectionComponent },
                 { path: 'users', loadChildren: './user-settings/user-settings.module#UserSettingsModule' },
                 { path: 'drivers', loadChildren: './driver-settings/driver-settings.module#DriverSettingsModule' },
-                { path: 'rates', loadChildren: './rate-settings/rate-settings.module#RateSettingsModule' }
+                { path: 'trucks', loadChildren: './truck-settings/truck-settings.module#TruckSettingsModule' },
+                { path: 'trailers', loadChildren: './trailer-settings/trailer-settings.module#TrailerSettingsModule' },
+                { path: 'rates', loadChildren: './rate-settings/rate-settings.module#RateSettingsModule' },
+                { path: 'locations', loadChildren: './location-settings/location-settings.module#LocationSettingsModule' },
+                { path: 'customers', loadChildren: './customer-settings/customer-settings.module#CustomerSettingsModule' },
+                { path: 'pick-up-items', loadChildren: './pick-up-item-settings/pick-up-item-settings.module#PickUpItemSettingsModule' },
             ]}
         ])
     ],

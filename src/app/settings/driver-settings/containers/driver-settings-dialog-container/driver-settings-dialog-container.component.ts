@@ -14,7 +14,8 @@ import { DriverSettingsDialogService } from '../../services/driver-settings-dial
             (add)="this.driverSettingsDialogService.add(driver)"
             (save)="this.driverSettingsDialogService.save(driver)"
         ></app-driver-settings-dialog>
-    `
+    `,
+    providers: [DriverSettingsDialogService]
 })
 export class DriverSettingsDialogContainerComponent {
     constructor(

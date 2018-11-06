@@ -12,13 +12,13 @@ export class LayoutService {
     sidenavOpened$ = new BehaviorSubject<boolean>(false);
 
     navigate(route: string) {
-        this.sidenavOpened$.next(false);
-        this.router.navigate(['app', route]);
+        this.router.navigate(['app', route])
+        .then(_ => this.sidenavOpened$.next(false));
     }
 
     logout() {
-        this.sidenavOpened$.next(false);
-        this.angularFireAuth.auth.signOut();
+        this.angularFireAuth.auth.signOut()
+        .then(_ => this.sidenavOpened$.next(false));
     }
 
     constructor(

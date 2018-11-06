@@ -28,8 +28,8 @@ export class DriverSettingsService {
         tap(_ => this.columnStringArr$.next(this.columns.map(column => column.id)))
     );
 
-    addDriver() {
-        this.matDialog.open(DriverSettingsDialogContainerComponent, { data: {} });
+    add() {
+        this.matDialog.open(DriverSettingsDialogContainerComponent, { data: { isActive: true } });
     }
 
     edit(row) {

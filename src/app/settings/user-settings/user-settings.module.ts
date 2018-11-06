@@ -5,9 +5,6 @@ import { FormsModule } from '@angular/forms';
 import { MatButtonModule, MatCheckboxModule, MatDialogModule, MatInputModule } from '@angular/material';
 import { RouterModule } from '@angular/router';
 import { SharedModule } from '@shared/shared.module';
-// Module Services
-import { UserSettingsService } from './services/user-settings.service';
-import { UserSettingsDialogService } from './services/user-settings-dialog.service';
 // Module Containers
 import { UserSettingsContainerComponent } from './containers/user-settings-container/user-settings-container.component';
 import { UserSettingsDialogContainerComponent } from './containers/user-settings-dialog-container/user-settings-dialog-container.component';
@@ -33,9 +30,5 @@ import { UserSettingsDialogComponent } from './components/user-settings-dialog/u
         UserSettingsDialogComponent
     ],
     entryComponents: [UserSettingsDialogContainerComponent],
-    providers: [
-        UserSettingsService,
-        UserSettingsDialogService
-    ]
 })
 export class UserSettingsModule { }

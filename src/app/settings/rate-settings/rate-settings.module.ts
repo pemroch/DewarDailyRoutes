@@ -2,12 +2,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { MatButtonModule, MatDialogModule, MatInputModule } from '@angular/material';
+import { MatButtonModule, MatCheckboxModule, MatDialogModule, MatInputModule } from '@angular/material';
 import { RouterModule } from '@angular/router';
 import { SharedModule } from '@shared/shared.module';
-// Module Services
-import { RateSettingsService } from './services/rate-settings.service';
-import { RateSettingsDialogService } from './services/rate-settings-dialog.service';
 // Module Containers
 import { RateSettingsContainerComponent } from './containers/rate-settings-container/rate-settings-container.component';
 import { RateSettingsDialogContainerComponent } from './containers/rate-settings-dialog-container/rate-settings-dialog-container.component';
@@ -19,6 +16,7 @@ import { RateSettingsDialogComponent } from './components/rate-settings-dialog/r
         CommonModule,
         FormsModule,
         MatButtonModule,
+        MatCheckboxModule,
         MatDialogModule,
         MatInputModule,
         RouterModule.forChild([
@@ -31,10 +29,6 @@ import { RateSettingsDialogComponent } from './components/rate-settings-dialog/r
         RateSettingsDialogContainerComponent,
         RateSettingsDialogComponent
     ],
-    entryComponents: [RateSettingsDialogContainerComponent],
-    providers: [
-        RateSettingsService,
-        RateSettingsDialogService
-    ]
+    entryComponents: [RateSettingsDialogContainerComponent]
 })
 export class RateSettingsModule { }

@@ -23,6 +23,7 @@ import { Component, Input } from '@angular/core';
         }
         #text-container {
             width: 100%;
+            z-index: 0;
             position: absolute;
             text-align: center;
         }

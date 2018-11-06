@@ -34,6 +34,14 @@ import { NgForm } from '@angular/forms';
                     required
                 />
             </mat-form-field>
+            <mat-checkbox
+                [(ngModel)]="this.rate.isActive"
+                [disabled]="this.pending"
+                name="isActive"
+                color="primary"
+            >
+                Active
+            </mat-checkbox>
             <p id="error" *ngIf="error">{{ error }}</p>
             <mat-dialog-actions>
                 <button

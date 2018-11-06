@@ -29,7 +29,7 @@ export class UserSettingsService {
         tap(_ => this.columnStringArr$.next(this.columns.map(column => column.id)))
     );
 
-    addUser() {
+    add() {
         this.matDialog.open(UserSettingsDialogContainerComponent, { data: {} });
     }
 

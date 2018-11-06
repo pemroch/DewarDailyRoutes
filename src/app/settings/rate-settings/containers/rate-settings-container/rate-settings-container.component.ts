@@ -19,7 +19,7 @@ import { RateSettingsService } from '../../services/rate-settings.service';
                 header-btn-left
             ></app-header-btn>
             <app-header-btn
-                (click)="this.rateSettingsService.addRate()"
+                (click)="this.rateSettingsService.add()"
                 icon="add"
                 toolTip="Add Rate"
                 matTooltipPosition="before"
@@ -33,7 +33,8 @@ import { RateSettingsService } from '../../services/rate-settings.service';
             [dataSource]="this.rateSettingsService.dataSource"
             (edit)="this.rateSettingsService.edit($event)"
         ></app-settings-table>
-    `
+    `,
+    providers: [RateSettingsService]
 })
 export class RateSettingsContainerComponent implements OnInit, AfterViewInit, OnDestroy {
     dataSourceSubscription: Subscription;
@@ -52,5 +53,5 @@ export class RateSettingsContainerComponent implements OnInit, AfterViewInit, On
         this.dataSourceSubscription.unsubscribe();
     }
 
-    constructor(private rateSettingsService: RateSettingsService) { }
+    constructor(public rateSettingsService: RateSettingsService) { }
 }

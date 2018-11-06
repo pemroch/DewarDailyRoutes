@@ -18,6 +18,7 @@ import { Component, Input } from '@angular/core';
     styles: [`
         button {
             margin: 0px 8px 0px;
+            z-index: 1;
         }
     `]
 })

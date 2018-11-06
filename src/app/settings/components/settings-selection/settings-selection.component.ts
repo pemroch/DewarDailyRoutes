@@ -10,12 +10,32 @@ import { Component } from '@angular/core';
                 <h3 matLine>Users</h3>
             </mat-list-item>
             <mat-list-item routerLink="/app/settings/drivers">
-                <mat-icon matListIcon>local_shipping</mat-icon>
+                <mat-icon matListIcon>person_pin</mat-icon>
                 <h3 matLine>Drivers</h3>
             </mat-list-item>
+            <mat-list-item routerLink="/app/settings/trucks">
+                <mat-icon matListIcon>directions_bus</mat-icon>
+                <h3 matLine>Trucks</h3>
+            </mat-list-item>
+            <mat-list-item routerLink="/app/settings/trailers">
+                <mat-icon matListIcon>local_shipping</mat-icon>
+                <h3 matLine>Trailers</h3>
+            </mat-list-item>
             <mat-list-item routerLink="/app/settings/rates">
-                <mat-icon matListIcon>attach_money</mat-icon>
+                <mat-icon matListIcon>local_atm</mat-icon>
                 <h3 matLine>Rates</h3>
+            </mat-list-item>
+            <mat-list-item routerLink="/app/settings/locations">
+                <mat-icon matListIcon>map</mat-icon>
+                <h3 matLine>Locations</h3>
+            </mat-list-item>
+            <mat-list-item routerLink="/app/settings/customers">
+                <mat-icon matListIcon>store</mat-icon>
+                <h3 matLine>Customers</h3>
+            </mat-list-item>
+            <mat-list-item routerLink="/app/settings/pick-up-items">
+                <mat-icon matListIcon>category</mat-icon>
+                <h3 matLine>Pick Up Items</h3>
             </mat-list-item>
         </mat-list>
     `,

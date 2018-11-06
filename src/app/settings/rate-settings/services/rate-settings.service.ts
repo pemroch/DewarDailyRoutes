@@ -15,7 +15,8 @@ import {
 export class RateSettingsService {
     columns = [
         { id: 'name', name: 'Name', type: 'string' },
-        { id: 'ratePerMile', name: 'Rate/Mile', type: 'currency' }
+        { id: 'ratePerMile', name: 'Rate/Mile', type: 'currency' },
+        { id: 'isActive', name: 'Active', type: 'boolean' }
     ];
 
     columnObjArr$ = new Subject<any[]>();
@@ -28,8 +29,8 @@ export class RateSettingsService {
         tap(_ => this.columnStringArr$.next(this.columns.map(column => column.id)))
     );
 
-    addRate() {
-        this.matDialog.open(RateSettingsDialogContainerComponent, { data: {} });
+    add() {
+        this.matDialog.open(RateSettingsDialogContainerComponent, { data: { isActive: true } });
     }
 
     edit(row) {

@@ -17,6 +17,7 @@ export class RateSettingsDialogService {
         this.pending$.next(true);
         this.ngFireService.add('rates', {
             name: rate.name.trim(),
+            isActive: rate.isActive || false,
             ratePerMile: rate.ratePerMile
         })
         .then(_ => this.matDialog.closeAll())
@@ -30,6 +31,7 @@ export class RateSettingsDialogService {
         this.pending$.next(true);
         this.ngFireService.update('rates', rate.id, {
             name: rate.name.trim(),
+            isActive: rate.isActive || false,
             ratePerMile: rate.ratePerMile
         })
         .then(_ => this.matDialog.closeAll())

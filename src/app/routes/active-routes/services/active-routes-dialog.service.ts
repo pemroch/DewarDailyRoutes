@@ -13,11 +13,13 @@ import { Comment, Route } from '@shared/models';
 export class ActiveRoutesDialogService {
     error$ = new Subject<string>();
     pending$ = new Subject<boolean>();
-    rates$ = this.ngFireService.loadCollection('rates', 'name', 'asc').pipe(delay(400));
-    trucks$ = this.ngFireService.loadCollection('trucks', 'name', 'asc').pipe(delay(400));
-    trailers$ = this.ngFireService.loadCollection('trailers', 'name', 'asc').pipe(delay(400));
-    drivers$ = this.ngFireService.loadCollection('drivers', 'name', 'asc').pipe(delay(400));
-    pickUps$ = this.ngFireService.loadCollection('pickUps', 'name', 'asc').pipe(delay(400));
+    drivers$ = this.ngFireService.load1Condition('drivers', 'isActive', '==', true, 'name', 'asc').pipe(delay(400));
+    trucks$ = this.ngFireService.load1Condition('trucks', 'isActive', '==', true, 'name', 'asc').pipe(delay(400));
+    trailers$ = this.ngFireService.load1Condition('trailers', 'isActive', '==', true, 'name', 'asc').pipe(delay(400));
+    rates$ = this.ngFireService.load1Condition('rates', 'isActive', '==', true, 'name', 'asc').pipe(delay(400));
+    locations$ = this.ngFireService.load1Condition('locations', 'isActive', '==', true, 'name', 'asc').pipe(delay(400));
+    customers$ = this.ngFireService.load1Condition('customers', 'isActive', '==', true, 'name', 'asc').pipe(delay(400));
+    pickUpItems$ = this.ngFireService.load1Condition('pickUpItems', 'isActive', '==', true, 'name', 'asc').pipe(delay(400));
     states = [
         { name: 'alabama', abbrev: 'al' },
         { name: 'alaska', abbrev: 'ak' },
@@ -76,19 +78,24 @@ export class ActiveRoutesDialogService {
 
         const routeObj: Route = {
             id: null,
+            customers: route.customers || [],
             routeNumber: route.routeNumber,
             dateAdded: new Date().getTime(),
             rate: route.rate || {
                 id: null,
+                isActive: null,
                 ratePerMile: null,
                 name: null
             },
+            ratePerDrop: route.ratePerDrop || null,
             truck: route.truck || {
                 id: null,
+                isActive: null,
                 name: null
             },
             trailer: route.trailer || {
                 id: null,
+                isActive: null,
                 name: null
             },
             driver: route.driver || {
@@ -97,6 +104,12 @@ export class ActiveRoutesDialogService {
                 name: null
             },
             temp: route.temp || null,
+            loadLocation: route.loadLocation || {
+                id: null,
+                isActive: null,
+                name: null
+            },
+            loadMonth: route.loadDate ? new Date(route.loadDate).getMonth() + 1 : null,
             loadDate: route.loadDate ? new Date(route.loadDate).getTime() : null,
             origin: route.origin || {
                 city: null,
@@ -108,7 +121,7 @@ export class ActiveRoutesDialogService {
             },
             miles: route.miles || null,
             noOfStops: route.noOfStops || null,
-            pickups: route.pickups || [],
+            pickUpItems: route.pickUpItems || [],
             refNumber1: route.refNumber1 || null,
             refNumber2: route.refNumber2 || null,
             refNumber3: route.refNumber3 || null,
@@ -132,19 +145,24 @@ export class ActiveRoutesDialogService {
 
         const routeObj: Route = {
             id: null,
+            customers: route.customers || [],
             routeNumber: route.routeNumber,
             dateAdded: route.dateAdded,
             rate: {
                 id: route.rate.id || null,
+                isActive: route.rate.isActive || null,
                 ratePerMile: route.rate.ratePerMile || null,
                 name: route.rate.name || null
             },
+            ratePerDrop: route.ratePerDrop || null,
             truck: route.truck || {
                 id: null,
+                isActive: null,
                 name: null
             },
             trailer: route.trailer || {
                 id: null,
+                isActive: null,
                 name: null
             },
             driver: route.driver || {
@@ -153,6 +171,12 @@ export class ActiveRoutesDialogService {
                 name: null
             },
             temp: route.temp || null,
+            loadLocation: route.loadLocation || {
+                id: null,
+                isActive: null,
+                name: null
+            },
+            loadMonth: route.loadDate ? new Date(route.loadDate).getMonth() + 1 : null,
             loadDate: route.loadDate ? new Date(route.loadDate).getTime() : null,
             origin: {
                 city: route.origin.city ? route.origin.city.toLowerCase().trim() : null,
@@ -164,7 +188,7 @@ export class ActiveRoutesDialogService {
             },
             miles: route.miles || null,
             noOfStops: route.noOfStops || null,
-            pickups: route.pickups || [],
+            pickUpItems: route.pickUpItems || [],
             refNumber1: route.refNumber1 || null,
             refNumber2: route.refNumber2 || null,
             refNumber3: route.refNumber3 || null,
@@ -185,6 +209,17 @@ export class ActiveRoutesDialogService {
 
     clearDate(route: Route) {
         route.loadDate = null;
+    }
+
+    setStops(route: Route, noOfStops: number) {
+        const ratesPerDrop = [];
+        for (let i = 0; i < noOfStops; i++) {
+            ratesPerDrop.push({
+                stop: i,
+                rate: route.ratePerDrop[i] || null
+            });
+        }
+        route.ratePerDrop = ratesPerDrop;
     }
 
     constructor(

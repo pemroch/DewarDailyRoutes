@@ -5,9 +5,6 @@ import { FormsModule } from '@angular/forms';
 import { MatButtonModule, MatCheckboxModule, MatDialogModule, MatInputModule } from '@angular/material';
 import { RouterModule } from '@angular/router';
 import { SharedModule } from '@shared/shared.module';
-// Module Services
-import { DriverSettingsService } from './services/driver-settings.service';
-import { DriverSettingsDialogService } from './services/driver-settings-dialog.service';
 // Module Containers
 import { DriverSettingsContainerComponent } from './containers/driver-settings-container/driver-settings-container.component';
 import {
@@ -34,10 +31,6 @@ import { DriverSettingsDialogComponent } from './components/driver-settings-dial
         DriverSettingsDialogContainerComponent,
         DriverSettingsDialogComponent
     ],
-    entryComponents: [DriverSettingsDialogContainerComponent],
-    providers: [
-        DriverSettingsService,
-        DriverSettingsDialogService
-    ]
+    entryComponents: [DriverSettingsDialogContainerComponent]
 })
 export class DriverSettingsModule { }

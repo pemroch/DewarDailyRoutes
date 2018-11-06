@@ -19,7 +19,7 @@ import { UserSettingsService } from '../../services/user-settings.service';
                 header-btn-left
             ></app-header-btn>
             <app-header-btn
-                (click)="this.userSettingsService.addUser()"
+                (click)="this.userSettingsService.add()"
                 icon="add"
                 toolTip="Add User"
                 matTooltipPosition="before"
@@ -33,7 +33,8 @@ import { UserSettingsService } from '../../services/user-settings.service';
             [dataSource]="this.userSettingsService.dataSource"
             (edit)="this.userSettingsService.edit($event)"
         ></app-settings-table>
-    `
+    `,
+    providers: [UserSettingsService]
 })
 export class UserSettingsContainerComponent implements OnInit, AfterViewInit, OnDestroy {
     dataSourceSubscription: Subscription;
@@ -52,5 +53,5 @@ export class UserSettingsContainerComponent implements OnInit, AfterViewInit, On
         this.dataSourceSubscription.unsubscribe();
     }
 
-    constructor(private userSettingsService: UserSettingsService) { }
+    constructor(public userSettingsService: UserSettingsService) { }
 }

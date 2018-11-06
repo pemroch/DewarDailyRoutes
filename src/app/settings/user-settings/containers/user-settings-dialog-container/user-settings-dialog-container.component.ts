@@ -17,7 +17,8 @@ import { UserSettingsDialogService } from '../../services/user-settings-dialog.s
             (save)="this.userSettingsDialogService.save(user)"
             (deleteUser)="this.userSettingsDialogService.deleteUser(user)"
         ></app-user-settings-dialog>
-    `
+    `,
+    providers: [UserSettingsDialogService]
 })
 export class UserSettingsDialogContainerComponent {
     constructor(
