@@ -1,6 +1,6 @@
 export interface Rate {
     id: string;
-    isActive: boolean;
+    isActive?: boolean;
     name: string;
     ratePerMile: number;
 }

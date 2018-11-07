@@ -1,5 +1,5 @@
 export interface Location {
     id: string;
-    isActive: boolean;
+    isActive?: boolean;
     name: string;
 }

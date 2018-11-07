@@ -37,7 +37,7 @@ import { Customer, Location, PickUpItem, Rate, Route, Truck, Trailer } from '@sh
                         name="loadLocation"
                         placeholder="Load Location"
                     >
-                        <mat-option *ngFor="let location of this.locations" [value]="location" class="capitalize">
+                        <mat-option *ngFor="let location of this.locations" [value]="location.id" class="capitalize">
                             {{ location.name }}
                         </mat-option>
                     </mat-select>
@@ -53,7 +53,7 @@ import { Customer, Location, PickUpItem, Rate, Route, Truck, Trailer } from '@sh
                         name="truck"
                         placeholder="Truck"
                     >
-                        <mat-option *ngFor="let truck of this.trucks" [value]="truck">
+                        <mat-option *ngFor="let truck of this.trucks" [value]="truck.id">
                             {{ truck.name }}
                         </mat-option>
                     </mat-select>
@@ -66,7 +66,7 @@ import { Customer, Location, PickUpItem, Rate, Route, Truck, Trailer } from '@sh
                         name="trailer"
                         placeholder="Trailer"
                     >
-                        <mat-option *ngFor="let trailer of this.trailers" [value]="trailer">
+                        <mat-option *ngFor="let trailer of this.trailers" [value]="trailer.id">
                             {{ trailer.name }}
                         </mat-option>
                     </mat-select>
@@ -82,7 +82,7 @@ import { Customer, Location, PickUpItem, Rate, Route, Truck, Trailer } from '@sh
                         name="driver"
                         placeholder="Driver"
                     >
-                        <mat-option *ngFor="let driver of this.drivers" [value]="driver" class="capitalize">
+                        <mat-option *ngFor="let driver of this.drivers" [value]="driver.id" class="capitalize">
                             {{ driver.name }}
                         </mat-option>
                     </mat-select>
@@ -126,9 +126,8 @@ import { Customer, Location, PickUpItem, Rate, Route, Truck, Trailer } from '@sh
                         name="originState"
                         placeholder="Origin State"
                     >
-                        <mat-option *ngFor="let state of this.states" [value]="state.abbrev" class="capitalize">
-                            {{ state.name }} -
-                            <span class="uppercase">{{ state.abbrev }}</span>
+                        <mat-option *ngFor="let state of this.states" [value]="state.abbrev">
+                            {{ state.name }} - {{ state.abbrev }}
                         </mat-option>
                     </mat-select>
                 </mat-form-field>
@@ -152,13 +151,12 @@ import { Customer, Location, PickUpItem, Rate, Route, Truck, Trailer } from '@sh
                     <mat-select
                         [(ngModel)]="this.route.destination.state"
                         [disabled]="this.pending"
-                        class="capitalize"
+                        [value]="'hello'"
                         name="destinationState"
                         placeholder="Destination State"
                     >
-                        <mat-option *ngFor="let state of this.states" [value]="state.abbrev" class="capitalize">
-                            {{ state.name }} -
-                            <span class="uppercase">{{ state.abbrev }}</span>
+                        <mat-option *ngFor="let state of this.states" [value]="state.abbrev">
+                            {{ state.name }} - {{ state.abbrev }}
                         </mat-option>
                     </mat-select>
                 </mat-form-field>
@@ -169,6 +167,7 @@ import { Customer, Location, PickUpItem, Rate, Route, Truck, Trailer } from '@sh
                 <mat-form-field class="flex-item">
                     <mat-select
                         [(ngModel)]="this.route.rate"
+                        [compareWith]="this.compareWith"
                         [disabled]="this.pending"
                         name="rate"
                         placeholder="Rate"
@@ -222,34 +221,47 @@ import { Customer, Location, PickUpItem, Rate, Route, Truck, Trailer } from '@sh
                 </mat-form-field>
             </div>
 
-            <mat-accordion>
-                <mat-expansion-panel>
-                    <mat-expansion-panel-header>
-                        <mat-panel-title>Rate/Drop</mat-panel-title>
-                    </mat-expansion-panel-header>
+            <mat-form-field class="flex-48">
+                <input
+                    #ratePerDropRef
+                    [(ngModel)]="this.ratePerDrop"
+                    (ngModelChange)="this.ratePerDropEdit.emit(ratePerDropRef.value)"
+                    [disabled]="this.pending"
+                    type="number"
+                    name="ratePerDrop"
+                    placeholder="Rate/Drop (All)"
+                    autocorrect="off"
+                    autocomplete="off"
+                    matInput
+                />
+            </mat-form-field>
 
-                    <ng-container *ngFor="let drop of this.route.ratePerDrop; let i=index">
-                        <mat-form-field class="flex-100">
-                            <input
-                                [(ngModel)]="drop.rate"
-                                [disabled]="this.pending"
-                                type="number"
-                                name="{{ i }}"
-                                placeholder="Stop {{ drop.stop + 1 }}"
-                                autocorrect="off"
-                                autocomplete="off"
-                                matInput
-                            />
-                        </mat-form-field>
-                    </ng-container>
+            <mat-expansion-panel class="flex-48">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>Rate/Drop (Each)</mat-panel-title>
+                </mat-expansion-panel-header>
 
-                </mat-expansion-panel>
-            </mat-accordion>
+                <ng-container *ngFor="let stop of this.stops; let i=index">
+                    <mat-form-field class="flex-100">
+                        <input
+                            [(ngModel)]="this.route.ratePerDrop[i]"
+                            [disabled]="this.pending"
+                            type="number"
+                            name="{{ i }}"
+                            placeholder="Stop {{ i + 1 }}"
+                            autocorrect="off"
+                            autocomplete="off"
+                            matInput
+                        />
+                    </mat-form-field>
+                </ng-container>
+            </mat-expansion-panel>
 
             <p class="mat-body-1 section-header">Customers</p>
-            <ng-container *ngFor="let customer of customers">
+            <ng-container *ngFor="let customer of customers; let i=index">
                 <mat-checkbox
-                    [(ngModel)]="this.route.customers[customer.id]"
+                    (change)="this.checkBoxChanged.emit({ array: 'customers', value: customer.id })"
+                    [checked]="this.route.customers.indexOf(customer.id) >= 0"
                     [disabled]="this.pending"
                     name="{{ customer.id }}"
                     class="capitalize"
@@ -261,7 +273,8 @@ import { Customer, Location, PickUpItem, Rate, Route, Truck, Trailer } from '@sh
             <p class="mat-body-1 section-header">Pick-Ups</p>
             <ng-container *ngFor="let pickUpItem of pickUpItems">
                 <mat-checkbox
-                    [(ngModel)]="this.route.pickUpItems[pickUpItem.id]"
+                    (change)="this.checkBoxChanged.emit({ array: 'pickUpItems', value: pickUpItem.id })"
+                    [checked]="this.route.pickUpItems.indexOf(pickUpItem.id) >= 0"
                     [disabled]="this.pending"
                     name="{{ pickUpItem.id }}"
                     class="capitalize"
@@ -315,7 +328,8 @@ import { Customer, Location, PickUpItem, Rate, Route, Truck, Trailer } from '@sh
             <p class="mat-body-1 section-header">Comments</p>
             <div *ngFor="let comment of this.route.comments" class="comment-container">
                 <p>{{ comment.text }}</p>
-                <span class="mat-caption">{{ comment.user.name }}</span>
+                <div class="mat-caption">{{ comment.email }}</div>
+                <div class="mat-caption">{{ comment.date | date: 'MM/dd/yy' }}</div>
             </div>
 
             <mat-form-field>
@@ -333,7 +347,13 @@ import { Customer, Location, PickUpItem, Rate, Route, Truck, Trailer } from '@sh
             <p id="error" *ngIf="error">{{ error }}</p>
 
             <mat-dialog-actions>
-                <mat-checkbox [(ngModel)]="this.route.confirmation" [disabled]="this.pending" name="confirmation">Confirm</mat-checkbox>
+                <mat-checkbox
+                    [(ngModel)]="this.route.confirmation.confirmed"
+                    [disabled]="this.pending"
+                    name="confirmation"
+                >
+                    Confirm
+                </mat-checkbox>
 
                 <div id="action-btn-container">
                     <button
@@ -345,7 +365,7 @@ import { Customer, Location, PickUpItem, Rate, Route, Truck, Trailer } from '@sh
                         Cancel
                     </button>
                     <button
-                        *ngIf="!route.uid"
+                        *ngIf="!route.id"
                         (click)="this.add.emit(addComment)"
                         [disabled]="!form.valid || this.pending"
                         type="submit"
@@ -355,7 +375,7 @@ import { Customer, Location, PickUpItem, Rate, Route, Truck, Trailer } from '@sh
                         Add
                     </button>
                     <button
-                        *ngIf="route.uid"
+                        *ngIf="route.id"
                         (click)="this.save.emit(addComment)"
                         [disabled]="!form.valid || this.pending"
                         type="submit"
@@ -380,14 +400,20 @@ import { Customer, Location, PickUpItem, Rate, Route, Truck, Trailer } from '@sh
         .capitalize {
             text-transform: capitalize;
         }
-        .uppercase {
-            text-transform: uppercase;
-        }
         .comment-container {
             border-bottom: 1px solid #ddd;
+            margin-bottom: 16px;
+            padding-bottom: 16px;
         }
         #error {
             color: #f44336;
+        }
+        mat-expansion-panel {
+            box-shadow: none !important;
+            border-bottom: 1px solid #aaa;
+        }
+        mat-expansion-panel-header {
+            padding-left: 0px;
         }
         .route-date-picker {
             color: black;
@@ -405,7 +431,7 @@ import { Customer, Location, PickUpItem, Rate, Route, Truck, Trailer } from '@sh
         .flex-100 {
             width: 100%;
         }
-        #flex-48,
+        .flex-48,
         .flex-2-container > .flex-item {
             width: 48%;
         }
@@ -424,8 +450,10 @@ export class ActiveRoutesDialogComponent {
     @Input() pending: boolean;
     @Input() error: string;
 
-    @Input() route: Route;
     @Input() states: string[];
+    @Input() stops: any[];
+    @Input() ratePerDrop: number;
+    @Input() route: Route;
     @Input() drivers: Trailer[];
     @Input() trucks: Truck[];
     @Input() trailers: Trailer[];
@@ -433,9 +461,12 @@ export class ActiveRoutesDialogComponent {
     @Input() locations: Location[];
     @Input() customers: Customer[];
     @Input() pickUpItems: PickUpItem[];
+    @Input() compareWith: any;
 
     @Output() add = new EventEmitter();
     @Output() save = new EventEmitter();
     @Output() clearDate = new EventEmitter();
     @Output() setStops = new EventEmitter();
+    @Output() ratePerDropEdit = new EventEmitter();
+    @Output() checkBoxChanged = new EventEmitter();
 }

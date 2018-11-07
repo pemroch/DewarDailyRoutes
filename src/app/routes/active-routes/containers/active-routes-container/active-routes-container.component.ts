@@ -23,6 +23,12 @@ import { ActiveRoutesService } from '../../services/active-routes.service';
             #routesTableComponent
             [displayedColumns]="this.activeRoutesService.displayedColumns"
             [dataSource]="this.activeRoutesService.dataSource"
+            [drivers]="this.activeRoutesService.drivers$ | async"
+            [trucks]="this.activeRoutesService.trucks$ | async"
+            [trailers]="this.activeRoutesService.trailers$ | async"
+            [locations]="this.activeRoutesService.locations$ | async"
+            [customers]="this.activeRoutesService.customers$ | async"
+            [pickUpItems]="this.activeRoutesService.pickUpItems$ | async"
             (edit)="this.activeRoutesService.editRoute($event)"
         ></app-routes-table>
     `,

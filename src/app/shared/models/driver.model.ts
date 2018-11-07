@@ -1,5 +1,5 @@
 export interface Driver {
     id: string;
-    isActive: boolean;
+    isActive?: boolean;
     name: string;
 }
