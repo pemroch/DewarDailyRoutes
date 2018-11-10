@@ -5,9 +5,9 @@ import { NgForm } from '@angular/forms';
 import { Customer, Location, PickUpItem, Rate, Route, Truck, Trailer } from '@shared/models';
 
 @Component({
-    selector: 'app-active-routes-dialog',
+    selector: 'app-routes-dialog',
     template: `
-        <form #form="ngForm">
+        <form #form="ngForm" *ngIf="this.route">
             <p class="mat-body-1 section-header">Load Date-Load Location</p>
             <div class="flex-2-container">
                 <mat-form-field class="flex-item">
@@ -23,7 +23,12 @@ import { Customer, Location, PickUpItem, Rate, Route, Truck, Trailer } from '@sh
                     <mat-datepicker-toggle matSuffix [for]="loadDate"></mat-datepicker-toggle>
                     <mat-datepicker #loadDate disabled="false"></mat-datepicker>
                     <span matSuffix>
-                        <button (click)="clearDate.emit()" [disabled]="this.pending || !route.loadDate" color="warn" mat-icon-button>
+                        <button
+                            (click)="clearDate.emit(this.route)"
+                            [disabled]="this.pending || !route.loadDate"
+                            color="warn"
+                            mat-icon-button
+                        >
                             <mat-icon>clear</mat-icon>
                         </button>
                     </span>
@@ -37,6 +42,7 @@ import { Customer, Location, PickUpItem, Rate, Route, Truck, Trailer } from '@sh
                         name="loadLocation"
                         placeholder="Load Location"
                     >
+                        <mat-option [value]="null">- NONE -</mat-option>
                         <mat-option *ngFor="let location of this.locations" [value]="location.id" class="capitalize">
                             {{ location.name }}
                         </mat-option>
@@ -45,20 +51,21 @@ import { Customer, Location, PickUpItem, Rate, Route, Truck, Trailer } from '@sh
             </div>
 
             <p class="mat-body-1 section-header">Truck-Trailer-Driver-Temp.</p>
-            <div class="flex-2-container">
-                <mat-form-field class="flex-item">
-                    <mat-select
-                        [(ngModel)]="this.route.truck"
-                        [disabled]="this.pending"
-                        name="truck"
-                        placeholder="Truck"
-                    >
-                        <mat-option *ngFor="let truck of this.trucks" [value]="truck.id">
-                            {{ truck.name }}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
+            <mat-form-field class="flex-48">
+                <mat-select
+                    [(ngModel)]="this.route.truck"
+                    [disabled]="this.pending"
+                    name="truck"
+                    placeholder="Truck"
+                >
+                    <mat-option [value]="null">- NONE -</mat-option>
+                    <mat-option *ngFor="let truck of this.trucks" [value]="truck.id">
+                        {{ truck.name }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
 
+            <div class="flex-2-container">
                 <mat-form-field class="flex-item">
                     <mat-select
                         [(ngModel)]="this.route.trailer"
@@ -66,24 +73,9 @@ import { Customer, Location, PickUpItem, Rate, Route, Truck, Trailer } from '@sh
                         name="trailer"
                         placeholder="Trailer"
                     >
+                        <mat-option [value]="null">- NONE -</mat-option>
                         <mat-option *ngFor="let trailer of this.trailers" [value]="trailer.id">
                             {{ trailer.name }}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
-            </div>
-
-            <div class="flex-2-container">
-                <mat-form-field class="flex-item">
-                    <mat-select
-                        [(ngModel)]="this.route.driver"
-                        [disabled]="this.pending"
-                        class="capitalize"
-                        name="driver"
-                        placeholder="Driver"
-                    >
-                        <mat-option *ngFor="let driver of this.drivers" [value]="driver.id" class="capitalize">
-                            {{ driver.name }}
                         </mat-option>
                     </mat-select>
                 </mat-form-field>
@@ -100,6 +92,47 @@ import { Customer, Location, PickUpItem, Rate, Route, Truck, Trailer } from '@sh
                         matInput
                     />
                     <span matSuffix>˚F</span>
+                </mat-form-field>
+            </div>
+
+            <div class="flex-2-container">
+                <mat-form-field class="flex-item">
+                    <mat-select
+                        [(ngModel)]="this.route.driver"
+                        [disabled]="this.pending"
+                        class="capitalize"
+                        name="driver"
+                        placeholder="Driver"
+                    >
+                        <mat-option [value]="null">- NONE -</mat-option>
+                        <mat-option *ngFor="let driver of this.drivers" [value]="driver.id" class="capitalize">
+                            {{ driver.name }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field class="flex-item">
+                    <input
+                        [(ngModel)]="this.route.driverEta"
+                        [matDatepicker]="driverEta"
+                        class="route-date-picker"
+                        name="driverEta"
+                        placeholder="Driver ETA"
+                        disabled
+                        matInput
+                    />
+                    <mat-datepicker-toggle matSuffix [for]="driverEta"></mat-datepicker-toggle>
+                    <mat-datepicker #driverEta disabled="false"></mat-datepicker>
+                    <span matSuffix>
+                        <button
+                            (click)="clearDate.emit(this.route)"
+                            [disabled]="this.pending || !route.driverEta"
+                            color="warn"
+                            mat-icon-button
+                        >
+                            <mat-icon>clear</mat-icon>
+                        </button>
+                    </span>
                 </mat-form-field>
             </div>
 
@@ -126,6 +159,7 @@ import { Customer, Location, PickUpItem, Rate, Route, Truck, Trailer } from '@sh
                         name="originState"
                         placeholder="Origin State"
                     >
+                        <mat-option [value]="null">- NONE -</mat-option>
                         <mat-option *ngFor="let state of this.states" [value]="state.abbrev">
                             {{ state.name }} - {{ state.abbrev }}
                         </mat-option>
@@ -155,6 +189,7 @@ import { Customer, Location, PickUpItem, Rate, Route, Truck, Trailer } from '@sh
                         name="destinationState"
                         placeholder="Destination State"
                     >
+                        <mat-option [value]="null">- NONE -</mat-option>
                         <mat-option *ngFor="let state of this.states" [value]="state.abbrev">
                             {{ state.name }} - {{ state.abbrev }}
                         </mat-option>
@@ -172,12 +207,13 @@ import { Customer, Location, PickUpItem, Rate, Route, Truck, Trailer } from '@sh
                         name="rate"
                         placeholder="Rate"
                     >
+                        <mat-option [value]="null">- NONE -</mat-option>
                         <mat-option *ngFor="let rate of this.rates" [value]="rate">
                             {{ rate.name }}
                         </mat-option>
                     </mat-select>
                 </mat-form-field>
-                <mat-form-field class="flex-item">
+                <mat-form-field *ngIf="this.route.rate && this.route.rate.id" class="flex-item">
                     <input
                         [(ngModel)]="this.route.rate.ratePerMile"
                         [disabled]="this.pending"
@@ -209,7 +245,11 @@ import { Customer, Location, PickUpItem, Rate, Route, Truck, Trailer } from '@sh
                     <input
                         #noOfStopsRef
                         [(ngModel)]="this.route.noOfStops"
-                        (ngModelChange)="this.setStops.emit(noOfStopsRef.value)"
+                        (ngModelChange)="this.setStops.emit({
+                            route: this.route,
+                            noOfStops: noOfStopsRef.value,
+                            ratePerDrop: this.ratePerDropAll
+                        })"
                         [disabled]="this.pending"
                         type="number"
                         name="noOfStops"
@@ -221,67 +261,48 @@ import { Customer, Location, PickUpItem, Rate, Route, Truck, Trailer } from '@sh
                 </mat-form-field>
             </div>
 
-            <mat-form-field class="flex-48">
-                <input
-                    #ratePerDropRef
-                    [(ngModel)]="this.ratePerDrop"
-                    (ngModelChange)="this.ratePerDropEdit.emit(ratePerDropRef.value)"
-                    [disabled]="this.pending"
-                    type="number"
-                    name="ratePerDrop"
-                    placeholder="Rate/Drop (All)"
-                    autocorrect="off"
-                    autocomplete="off"
-                    matInput
-                />
-            </mat-form-field>
+            <div class="flex-2-container">
+                <mat-form-field class="flex-item">
+                    <input
+                        #ratePerDropRef
+                        [(ngModel)]="this.ratePerDropAll"
+                        (keyup)="this.ratePerDropAllKeyup.emit({ route: this.route, ratePerDrop: ratePerDropRef.value})"
+                        [disabled]="this.pending"
+                        type="number"
+                        name="ratePerDrop"
+                        placeholder="Rate/Drop (All)"
+                        autocorrect="off"
+                        autocomplete="off"
+                        matInput
+                    />
+                </mat-form-field>
 
-            <mat-expansion-panel class="flex-48">
-                <mat-expansion-panel-header>
-                    <mat-panel-title>Rate/Drop (Each)</mat-panel-title>
-                </mat-expansion-panel-header>
-
-                <ng-container *ngFor="let stop of this.stops; let i=index">
-                    <mat-form-field class="flex-100">
-                        <input
-                            [(ngModel)]="this.route.ratePerDrop[i]"
-                            [disabled]="this.pending"
-                            type="number"
-                            name="{{ i }}"
-                            placeholder="Stop {{ i + 1 }}"
-                            autocorrect="off"
-                            autocomplete="off"
-                            matInput
-                        />
-                    </mat-form-field>
-                </ng-container>
-            </mat-expansion-panel>
-
-            <p class="mat-body-1 section-header">Customers</p>
-            <ng-container *ngFor="let customer of customers; let i=index">
-                <mat-checkbox
-                    (change)="this.checkBoxChanged.emit({ array: 'customers', value: customer.id })"
-                    [checked]="this.route.customers.indexOf(customer.id) >= 0"
-                    [disabled]="this.pending"
-                    name="{{ customer.id }}"
-                    class="capitalize"
-                >
-                    {{ customer.name }}
-                </mat-checkbox>
-            </ng-container>
-
-            <p class="mat-body-1 section-header">Pick-Ups</p>
-            <ng-container *ngFor="let pickUpItem of pickUpItems">
-                <mat-checkbox
-                    (change)="this.checkBoxChanged.emit({ array: 'pickUpItems', value: pickUpItem.id })"
-                    [checked]="this.route.pickUpItems.indexOf(pickUpItem.id) >= 0"
-                    [disabled]="this.pending"
-                    name="{{ pickUpItem.id }}"
-                    class="capitalize"
-                >
-                    {{ pickUpItem.name }}
-                </mat-checkbox>
-            </ng-container>
+                <mat-expansion-panel id="active-route-dialog-panel" class="flex-item">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>Rate/Drop (Each)</mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <ng-container *ngFor="let stop of this.route.ratePerDrop; let i=index; trackBy: trackByFn">
+                        <mat-form-field class="flex-100">
+                            <input
+                                #ratePerDropEach
+                                [(ngModel)]="this.route.ratePerDrop[i]"
+                                (keyup)="this.ratePerDropEachKeyup.emit({
+                                    route: this.route,
+                                    index: i,
+                                    value: ratePerDropEach.value
+                                })"
+                                [disabled]="this.pending"
+                                placeholder="Stop {{ i + 1 }}"
+                                name="{{ i }}"
+                                type="number"
+                                autocorrect="off"
+                                autocomplete="off"
+                                matInput
+                            />
+                        </mat-form-field>
+                    </ng-container>
+                </mat-expansion-panel>
+            </div>
 
             <p class="mat-body-1 section-header">Reference Numbers</p>
             <div class="flex-3-container">
@@ -325,6 +346,32 @@ import { Customer, Location, PickUpItem, Rate, Route, Truck, Trailer } from '@sh
                 </mat-form-field>
             </div>
 
+            <p class="mat-body-1 section-header">Customers</p>
+            <ng-container *ngFor="let customer of customers; let i=index">
+                <mat-checkbox
+                    (change)="this.checkBoxChanged.emit({ array: this.route.customers, value: customer.id })"
+                    [checked]="this.route.customers.indexOf(customer.id) >= 0"
+                    [disabled]="this.pending"
+                    name="{{ customer.id }}"
+                    class="capitalize"
+                >
+                    {{ customer.name }}
+                </mat-checkbox>
+            </ng-container>
+
+            <p class="mat-body-1 section-header">Pick-Ups</p>
+            <ng-container *ngFor="let pickUpItem of pickUpItems">
+                <mat-checkbox
+                    (change)="this.checkBoxChanged.emit({ array: this.route.pickUpItems, value: pickUpItem.id })"
+                    [checked]="this.route.pickUpItems.indexOf(pickUpItem.id) >= 0"
+                    [disabled]="this.pending"
+                    name="{{ pickUpItem.id }}"
+                    class="capitalize"
+                >
+                    {{ pickUpItem.name }}
+                </mat-checkbox>
+            </ng-container>
+
             <p class="mat-body-1 section-header">Comments</p>
             <div *ngFor="let comment of this.route.comments" class="comment-container">
                 <p>{{ comment.text }}</p>
@@ -347,13 +394,17 @@ import { Customer, Location, PickUpItem, Rate, Route, Truck, Trailer } from '@sh
             <p id="error" *ngIf="error">{{ error }}</p>
 
             <mat-dialog-actions>
-                <mat-checkbox
-                    [(ngModel)]="this.route.confirmation.confirmed"
-                    [disabled]="this.pending"
-                    name="confirmation"
-                >
-                    Confirm
-                </mat-checkbox>
+                <div>
+                    <mat-checkbox
+                        [(ngModel)]="this.route.confirmation.confirmed"
+                        [disabled]="this.pending"
+                        name="confirmation"
+                    >
+                        Confirm
+                    </mat-checkbox>
+                    <div>{{ this.route.confirmation.email }}</div>
+                    <div>{{ this.route.confirmation.date | date: 'MM/dd/yy' }}</div>
+                </div>
 
                 <div id="action-btn-container">
                     <button
@@ -366,7 +417,7 @@ import { Customer, Location, PickUpItem, Rate, Route, Truck, Trailer } from '@sh
                     </button>
                     <button
                         *ngIf="!route.id"
-                        (click)="this.add.emit(addComment)"
+                        (click)="this.add.emit({ route: this.route, comment: addComment })"
                         [disabled]="!form.valid || this.pending"
                         type="submit"
                         color="primary"
@@ -376,7 +427,7 @@ import { Customer, Location, PickUpItem, Rate, Route, Truck, Trailer } from '@sh
                     </button>
                     <button
                         *ngIf="route.id"
-                        (click)="this.save.emit(addComment)"
+                        (click)="this.save.emit({ route: this.route, comment: addComment})"
                         [disabled]="!form.valid || this.pending"
                         type="submit"
                         color="primary"
@@ -411,9 +462,12 @@ import { Customer, Location, PickUpItem, Rate, Route, Truck, Trailer } from '@sh
         mat-expansion-panel {
             box-shadow: none !important;
             border-bottom: 1px solid #aaa;
+            border-bottom: none;
         }
         mat-expansion-panel-header {
             padding-left: 0px;
+            border-bottom: 1px solid rgb(170, 170, 170);
+            height: 44px !important;
         }
         .route-date-picker {
             color: black;
@@ -443,16 +497,15 @@ import { Customer, Location, PickUpItem, Rate, Route, Truck, Trailer } from '@sh
         }
     `]
 })
-export class ActiveRoutesDialogComponent {
+export class RoutesDialogComponent {
     addComment: string;
     ngForm: NgForm;
 
+    @Input() states: string[];
+    @Input() ratePerDropAll: number[];
+
     @Input() pending: boolean;
     @Input() error: string;
-
-    @Input() states: string[];
-    @Input() stops: any[];
-    @Input() ratePerDrop: number;
     @Input() route: Route;
     @Input() drivers: Trailer[];
     @Input() trucks: Truck[];
@@ -461,12 +514,15 @@ export class ActiveRoutesDialogComponent {
     @Input() locations: Location[];
     @Input() customers: Customer[];
     @Input() pickUpItems: PickUpItem[];
+
+    @Input() trackByFn: any;
     @Input() compareWith: any;
 
     @Output() add = new EventEmitter();
     @Output() save = new EventEmitter();
     @Output() clearDate = new EventEmitter();
-    @Output() setStops = new EventEmitter();
-    @Output() ratePerDropEdit = new EventEmitter();
     @Output() checkBoxChanged = new EventEmitter();
+    @Output() setStops = new EventEmitter();
+    @Output() ratePerDropAllKeyup = new EventEmitter();
+    @Output() ratePerDropEachKeyup = new EventEmitter();
 }

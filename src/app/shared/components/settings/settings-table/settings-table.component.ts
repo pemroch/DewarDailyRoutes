@@ -18,24 +18,21 @@ import { MatSort } from '@angular/material';
                         </ng-container>
                     </mat-cell>
                 </ng-container>
-                <mat-header-row *matHeaderRowDef="this.columnStringArr"></mat-header-row>
+                <mat-header-row *matHeaderRowDef="this.columnStringArr; sticky: true"></mat-header-row>
                 <mat-row *matRowDef="let row; columns: this.columnStringArr;" (click)="this.edit.emit(row)"></mat-row>
             </mat-table>
         </div>
     `,
     styles: [`
         #container {
-            background: #eee;
-            padding: 0px 4px 4px;
             position: absolute;
             left: 0px;
             right: 0px;
             bottom: 0px;
             top: 120px;
-            margin-top: 4px;
         }
-        mat-table {
-            margin-top: 4px;
+        mat-header-row {
+            top: 56px !important;
         }
         mat-header-cell,
         mat-cell {

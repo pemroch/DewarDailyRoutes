@@ -19,9 +19,10 @@ export interface Route {
     truck: Truck;
     trailer: Trailer;
     driver: Driver;
+    driverEta: number;
     temp: number;
     loadLocation: Location;
-    loadDate: number | Date;
+    loadDate: any;
     origin: RouteAddress;
     destination: RouteAddress;
     miles: number;

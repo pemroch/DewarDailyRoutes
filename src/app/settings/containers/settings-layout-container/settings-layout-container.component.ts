@@ -1,16 +1,17 @@
 // Angular
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 // Shared Services
 import { LayoutService } from '@layout/services';
 
 @Component({
     selector: 'app-settings-layout-container',
     template: `
-        <router-outlet></router-outlet>
+        <router-outlet (activate)="this.refreshView()"></router-outlet>
     `
 })
-export class SettingsLayoutContainerComponent implements OnInit {
-    ngOnInit() {
+export class SettingsLayoutContainerComponent {
+
+    refreshView() {
         this.layoutService.toolbarTitle$.next('Settings');
     }
 

@@ -17,8 +17,12 @@ import { Component, Input } from '@angular/core';
     `,
     styles: [`
         #header-container {
+            top: 0px;
+            z-index: 999;
+            position: sticky;
+            background: white;
             display: flex;
-            padding: 8px 0px;
+            padding: 8px 8px;
             place-items: center;
         }
         #text-container {

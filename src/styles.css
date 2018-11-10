@@ -4,3 +4,15 @@ html, body {
     margin: 0px;
     height: 100%;
 }
+.layout-sidenav-expansion > .mat-expansion-panel-content {
+    background: #ddd;
+}
+
+.layout-sidenav-expansion > .mat-expansion-panel-content > .mat-expansion-panel-body {
+    padding: 0px;
+}
+
+#active-route-dialog-panel > .mat-expansion-panel-content {
+    background: #eee;
+    padding-top: 24px;
+}

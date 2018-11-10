@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ActiveRoutesDialogComponent } from './active-routes-dialog.component';
+import { RoutesContainerComponent } from './routes-container.component';
 
-describe('ActiveRoutesDialogComponent', () => {
-  let component: ActiveRoutesDialogComponent;
-  let fixture: ComponentFixture<ActiveRoutesDialogComponent>;
+describe('RoutesContainerComponent', () => {
+  let component: RoutesContainerComponent;
+  let fixture: ComponentFixture<RoutesContainerComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ActiveRoutesDialogComponent ]
+      declarations: [ RoutesContainerComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ActiveRoutesDialogComponent);
+    fixture = TestBed.createComponent(RoutesContainerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
