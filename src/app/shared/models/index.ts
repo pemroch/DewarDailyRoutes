@@ -1,7 +1,6 @@
 export * from './user.model';
 export * from './driver.model';
 export * from './rate.model';
-export * from './rate-per-drop.model';
 export * from './truck.model';
 export * from './trailer.model';
 export * from './location.model';

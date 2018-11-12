@@ -16,7 +16,8 @@ export class RateSettingsService {
     columns = [
         { id: 'name', name: 'Name', type: 'string' },
         { id: 'ratePerMile', name: 'Rate/Mile', type: 'currency' },
-        { id: 'isActive', name: 'Active', type: 'boolean' }
+        { id: 'ratePerStop', name: 'Rate/Stop', type: 'currency' },
+        { id: 'isActive', name: 'Active', type: 'boolean' },
     ];
 
     columnObjArr$ = new Subject<any[]>();

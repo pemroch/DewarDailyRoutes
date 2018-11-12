@@ -22,6 +22,17 @@ export class NgFireService {
         .valueChanges();
     }
 
+    loadCollectionLimit(collection: string, limit: number, orderBy?: string, sort?: any) {
+        return orderBy ?
+        this.angularFirestore
+        .collection(collection, ref => ref
+            .orderBy(orderBy, sort).limit(limit))
+        .valueChanges() :
+        this.angularFirestore
+        .collection(collection, ref => ref.limit(limit))
+        .valueChanges();
+    }
+
     load1Condition( collection: string, field1: string, operator1: any, value1: any, orderBy?: string, sort?: any) {
         return orderBy ?
         this.angularFirestore

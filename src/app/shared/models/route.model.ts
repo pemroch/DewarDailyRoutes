@@ -1,12 +1,9 @@
 // Shaded Models
 import {
     Comment,
-    Customer,
     Driver,
     Location,
-    PickUpItem,
     Rate,
-    RatePerDrop,
     RouteAddress,
     RouteConfirmation,
     Truck,
@@ -15,23 +12,22 @@ import {
 
 export interface Route {
     id: string;
-    customers: Customer[];
-    loadMonth: number;
+    customers: string[];
     routeNumber: number;
-    dateAdded: number;
     rate: Rate;
-    ratePerDrop: RatePerDrop[];
+    ratePerStopEach: number[];
     truck: Truck;
     trailer: Trailer;
     driver: Driver;
+    driverEta: any;
     temp: number;
     loadLocation: Location;
-    loadDate: number;
+    loadDate: any;
     origin: RouteAddress;
     destination: RouteAddress;
     miles: number;
     noOfStops: number;
-    pickUpItems: PickUpItem[];
+    pickUpItems: string[];
     refNumber1: string;
     refNumber2: string;
     refNumber3: string;

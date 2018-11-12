@@ -13,6 +13,7 @@ import { Component, Input } from '@angular/core';
             mat-button
             mat-icon-button>
             <mat-icon>{{ icon }}</mat-icon>
+            <ng-content></ng-content>
         </button>
     `,
     styles: [`

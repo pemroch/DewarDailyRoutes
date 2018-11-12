@@ -1,8 +1,5 @@
-// Shaded Models
-import { User } from '@shared/models';
-
 export interface Comment {
-    user: User;
+    email: string;
     text: string;
     date: Date;
 }

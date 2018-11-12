@@ -1,10 +1,11 @@
 // Modules
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireModule } from '@angular/fire';
+import { GestureConfig } from '@angular/material';
 import { RouterModule } from '@angular/router';
 import { SharedModule } from '@shared/shared.module';
 // Layout Services
@@ -43,7 +44,10 @@ const firebaseConfig = {
         SharedModule.forRoot()
     ],
     bootstrap: [AppComponent],
-    providers: [LayoutService]
+    providers: [
+        LayoutService,
+        { provide: HAMMER_GESTURE_CONFIG, useClass: GestureConfig }
+    ]
 })
 
 export class AppModule { }

@@ -18,7 +18,6 @@ import { LoadingService, LoggedInUserService, NgFireService } from '@shared/serv
 import {
     HeaderComponent,
     HeaderBtnComponent,
-    RoutesTableComponent,
     SettingsTableComponent
 } from '@shared/components';
 
@@ -37,13 +36,11 @@ import {
     declarations: [
         HeaderComponent,
         HeaderBtnComponent,
-        RoutesTableComponent,
         SettingsTableComponent
     ],
     exports: [
         HeaderComponent,
         HeaderBtnComponent,
-        RoutesTableComponent,
         SettingsTableComponent
     ]
 })
