@@ -15,11 +15,11 @@ export interface Route {
     customers: string[];
     routeNumber: number;
     rate: Rate;
-    ratePerDrop: number[];
+    ratePerStopEach: number[];
     truck: Truck;
     trailer: Trailer;
     driver: Driver;
-    driverEta: number;
+    driverEta: any;
     temp: number;
     loadLocation: Location;
     loadDate: any;

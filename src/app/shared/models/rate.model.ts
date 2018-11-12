@@ -3,4 +3,5 @@ export interface Rate {
     isActive?: boolean;
     name: string;
     ratePerMile: number;
+    ratePerStop: number;
 }

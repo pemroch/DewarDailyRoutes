@@ -17,7 +17,6 @@ import { RoutesTableComponent } from '../../components/routes-table/routes-table
         <app-header text="Routes">
             <app-routes-menu-btn
                 (addRoute)="this.routesMenuBtnService.addRoute()"
-                (fileInputClick)="this.routesMenuBtnService.fileInputClick($event)"
                 (uploadRoutes)="this.routesMenuBtnService.uploadRoutes($event)"
                 header-btn-right
             ></app-routes-menu-btn>
@@ -40,7 +39,7 @@ import { RoutesTableComponent } from '../../components/routes-table/routes-table
             (edit)="this.routesTableService.editRoute($event)"
         ></app-routes-table>
     `,
-    providers: [RoutesTableService, RoutesTableFilterService, RoutesMenuBtnService]
+    providers: [RoutesTableFilterService, RoutesMenuBtnService]
 })
 export class RoutesContainerComponent implements OnInit, AfterViewInit, OnDestroy {
     dataSourceSubscription: Subscription;
@@ -65,5 +64,5 @@ export class RoutesContainerComponent implements OnInit, AfterViewInit, OnDestro
         public routesTableService: RoutesTableService,
         public routesTableFilterService: RoutesTableFilterService,
         public routesMenuBtnService: RoutesMenuBtnService
-        ) { }
+    ) { }
 }

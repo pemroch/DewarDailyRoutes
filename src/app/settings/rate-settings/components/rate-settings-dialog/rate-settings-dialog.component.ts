@@ -1,6 +1,8 @@
 // Angular
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { NgForm } from '@angular/forms';
+// Shared Models
+import { Rate } from '@shared/models';
 
 @Component({
     selector: 'app-rate-settings-dialog',
@@ -24,14 +26,24 @@ import { NgForm } from '@angular/forms';
                 <input
                     [(ngModel)]="this.rate.ratePerMile"
                     [disabled]="this.pending"
-                    id="name"
                     type="number"
                     name="ratePerMile"
                     placeholder="Rate/Mile"
                     autocorrect="off"
                     autocomplete="off"
                     matInput
-                    required
+                />
+            </mat-form-field>
+            <mat-form-field>
+                <input
+                    [(ngModel)]="this.rate.ratePerStop"
+                    [disabled]="this.pending"
+                    type="number"
+                    name="ratePerStop"
+                    placeholder="Rate/Stop"
+                    autocorrect="off"
+                    autocomplete="off"
+                    matInput
                 />
             </mat-form-field>
             <mat-checkbox
@@ -91,7 +103,7 @@ import { NgForm } from '@angular/forms';
 export class RateSettingsDialogComponent {
     ngForm: NgForm;
 
-    @Input() rate: any;
+    @Input() rate: Rate;
     @Input() pending: boolean;
     @Input() error: string;
 

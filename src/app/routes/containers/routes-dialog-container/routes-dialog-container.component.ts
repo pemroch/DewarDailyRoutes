@@ -10,7 +10,6 @@ import { RoutesDialiogService } from '../../services/routes-dialiog.service';
         <app-routes-dialog-loading *ngIf="!(this.routesDialiogService.route$ | async)"></app-routes-dialog-loading>
         <app-routes-dialog
             [states]="this.routesDialiogService.states"
-            [ratePerDropAll]="this.routesDialiogService.ratePerDropAll"
 
             [pending]="this.routesDialiogService.pending$ | async"
             [error]="this.routesDialiogService.error$ | async"
@@ -31,8 +30,8 @@ import { RoutesDialiogService } from '../../services/routes-dialiog.service';
             (clearDate)="this.routesDialiogService.clearDate($event)"
             (checkBoxChanged)="this.routesDialiogService.checkBoxChanged($event)"
             (setStops)="this.routesDialiogService.setStops($event)"
-            (ratePerDropAllKeyup)="this.routesDialiogService.ratePerDropAllKeyup($event)"
-            (ratePerDropEachKeyup)="this.routesDialiogService.ratePerDropEachKeyup($event)"
+            (ratePerStopKeyup)="this.routesDialiogService.ratePerStopKeyup($event)"
+            (ratePerStopEachKeyup)="this.routesDialiogService.ratePerStopEachKeyup($event)"
         ></app-routes-dialog>
     `,
     providers: [RoutesDialiogService]

@@ -16,9 +16,10 @@ export class RateSettingsDialogService {
     add(rate: Rate) {
         this.pending$.next(true);
         this.ngFireService.add('rates', {
-            name: rate.name.trim(),
             isActive: rate.isActive || false,
-            ratePerMile: rate.ratePerMile
+            name: rate.name.trim(),
+            ratePerMile: rate.ratePerMile || null,
+            ratePerStop: rate.ratePerStop || null
         })
         .then(_ => this.matDialog.closeAll())
         .catch(error => {
@@ -30,9 +31,10 @@ export class RateSettingsDialogService {
     save(rate: Rate) {
         this.pending$.next(true);
         this.ngFireService.update('rates', rate.id, {
-            name: rate.name.trim(),
             isActive: rate.isActive || false,
-            ratePerMile: rate.ratePerMile
+            name: rate.name.trim(),
+            ratePerMile: rate.ratePerMile || null,
+            ratePerStop: rate.ratePerStop || null
         })
         .then(_ => this.matDialog.closeAll())
         .catch(error => {

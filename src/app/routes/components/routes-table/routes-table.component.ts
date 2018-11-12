@@ -98,10 +98,24 @@ import { Driver, Truck, Trailer, Location, Customer, PickUpItem } from '@shared/
                     </mat-cell>
                 </ng-container>
 
+                <ng-container matColumnDef="ratePerMile">
+                    <mat-header-cell *matHeaderCellDef mat-header-cell mat-sort-header> Rate/Mile </mat-header-cell>
+                    <mat-cell *matCellDef="let route" mat-cell>
+                        <div>{{ route.rate?.ratePerMile | currency }}</div>
+                    </mat-cell>
+                </ng-container>
+
                 <ng-container matColumnDef="noOfStops">
                     <mat-header-cell *matHeaderCellDef mat-header-cell mat-sort-header> No. of Stop </mat-header-cell>
                     <mat-cell *matCellDef="let route" mat-cell>
                         <div>{{ route.noOfStops }}</div>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="ratePerStop">
+                    <mat-header-cell *matHeaderCellDef mat-header-cell mat-sort-header> Rate/Stop </mat-header-cell>
+                    <mat-cell *matCellDef="let route" mat-cell>
+                        <div>{{ route.rate?.ratePerStop | currency }}</div>
                     </mat-cell>
                 </ng-container>
 
@@ -173,6 +187,7 @@ import { Driver, Truck, Trailer, Location, Customer, PickUpItem } from '@shared/
         }
         mat-table {
             display: table;
+            width: 100%;
         }
         mat-header-row {
             background: white;

@@ -31,7 +31,9 @@ export class RoutesTableService {
         'origin',
         'destination',
         'miles',
+        'ratePerMile',
         'noOfStops',
+        'ratePerStop',
         'pickUpItems',
         'loadDate',
         'loadLocation',
@@ -54,8 +56,7 @@ export class RoutesTableService {
             month: route.loadDate ? this.getMonday(route.loadDate) : null
         }))),
         delay(400),
-        tap(routes => this.dataSource.data = routes),
-        tap(routes => console.log(routes)),
+        tap(routes => this.dataSource.data = routes)
     );
 
     drivers$ = this.ngFireService.loadCollection('drivers').pipe(
@@ -145,7 +146,7 @@ export class RoutesTableService {
     /* Service Functions **/
 
     editRoute(route) {
-        this.matDialog.open(RoutesDialogContainerComponent, { data: route.id, width: '90%', height: '90%' });
+        this.matDialog.open(RoutesDialogContainerComponent, { data: route.id, width: '75%', height: '90%' });
     }
 
     /* Helper Functions **/

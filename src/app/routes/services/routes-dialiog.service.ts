@@ -5,7 +5,7 @@ import { MatDialog } from '@angular/material';
 import { firestore, auth } from 'firebase/app';
 // rxjs
 import { BehaviorSubject, of, Subject } from 'rxjs';
-import { delay, switchMap, tap } from 'rxjs/operators';
+import { delay, map, switchMap, tap } from 'rxjs/operators';
 // Shared Services
 import { NgFireService } from '@shared/services';
 // Shared Models
@@ -13,6 +13,9 @@ import { Route } from '@shared/models';
 
 @Injectable()
 export class RoutesDialiogService {
+
+    /** Models */
+
     states = [
         { name: 'Alabama', abbrev: 'AL' },
         { name: 'Alaska', abbrev: 'AK' },
@@ -65,17 +68,15 @@ export class RoutesDialiogService {
         { name: 'Wisconsin', abbrev: 'WI' },
         { name: 'Wyoming', abbrev: 'WY' }
     ];
-    ratePerDropAll = null;
 
     routeId$ = new BehaviorSubject<string>(null);
-
     error$ = new Subject<string>();
     pending$ = new Subject<boolean>();
     route$ = this.routeId$.pipe(
         switchMap(routeId => {
             return routeId
             ? this.ngFireService.loadDocument('routes', routeId)
-            : of({
+            : of(<Route>{
                 comments: [],
                 confirmation: { email: null, date: null, confirmed: null },
                 customers: [],
@@ -89,8 +90,8 @@ export class RoutesDialiogService {
                 noOfStops: null,
                 origin: { city: null, state: null },
                 pickUpItems: [],
-                rate: { id: null, ratePerMile: null, name: null },
-                ratePerDrop: [],
+                rate: { id: null, name: null, ratePerMile: null, ratePerStop: null },
+                ratePerStopEach: [],
                 refNumber1: null,
                 refNumber2: null,
                 refNumber3: null,
@@ -99,9 +100,10 @@ export class RoutesDialiogService {
                 trailer: null,
                 truck: null
             });
-
         }),
-        tap((route: Route) => route.loadDate = route.loadDate ? new Date(route.loadDate) : null),
+        map((route: Route) => Object.assign({}, route, { loadDate: route.loadDate ? new Date(route.loadDate) : null })),
+        map((route: Route) => Object.assign({}, route, { driverEta: route.driverEta ? new Date(route.driverEta) : null })),
+        tap((route: Route) => this.setStops(route)),
         delay(800),
     );
     drivers$ = this.ngFireService.load1Condition('drivers', 'isActive', '==', true, 'name', 'asc').pipe(delay(800));
@@ -112,7 +114,9 @@ export class RoutesDialiogService {
     customers$ = this.ngFireService.load1Condition('customers', 'isActive', '==', true, 'name', 'asc').pipe(delay(800));
     pickUpItems$ = this.ngFireService.load1Condition('pickUpItems', 'isActive', '==', true, 'name', 'asc').pipe(delay(800));
 
-    add($event) {
+    /** Functions */
+
+    add($event: { route: Route, comment: string }) {
         this.pending$.next(true);
 
         const route = Object.assign({}, $event.route, {
@@ -136,7 +140,7 @@ export class RoutesDialiogService {
                 city: $event.route.origin.city ? $event.route.origin.city : null,
                 state: $event.route.origin.state ? $event.route.origin.state : null
             },
-            rate: $event.route.rate || { id: null, ratePerMile: null, name: null },
+            rate: $event.route.rate || { id: null, name: null, ratePerMile: null, ratePerStop: null },
             refNumber1: $event.route.refNumber1 || null,
             refNumber2: $event.route.refNumber2 || null,
             refNumber3: $event.route.refNumber3 || null,
@@ -168,7 +172,7 @@ export class RoutesDialiogService {
         });
     }
 
-    save($event) {
+    save($event: { route: Route, comment: string }) {
         this.pending$.next(true);
 
         const route = Object.assign({}, $event.route, {
@@ -208,43 +212,47 @@ export class RoutesDialiogService {
         });
     }
 
-    compareWith = (o1: any, o2: any) => {
+    compareWith = (o1: any, o2: any): boolean => {
         if (o1.id && o2.id) {
             return o1.id === o2.id;
         }
     }
 
-    trackByFn(index: any) {
+    trackByFn(index: number): number {
         return index;
      }
 
-    clearDate(route: Route) {
-        route.loadDate = null;
+    clearDate($event: { route: Route, prop: string }) {
+        $event.route[$event.prop] = null;
     }
 
-    checkBoxChanged(event: any) {
-        const index = event.array.indexOf(event.value);
+    checkBoxChanged($event: { array: any[], value: any }) {
+        const index = $event.array.indexOf($event.value);
         if (index === -1) {
-            event.array.push(event.value);
+            $event.array.push($event.value);
         } else {
-            event.array.splice(index, 1);
+            $event.array.splice(index, 1);
         }
     }
 
-    setStops($event) {
+    setStops(route: Route) {
         const stops = [];
-        for (let i = 0; i < $event.noOfStops; i++) {
-            stops.push($event.route.ratePerDrop[i] || $event.ratePerDrop || null);
+        if (route.noOfStops !== null && route.noOfStops < 100) {
+            for (let i = 0; i < route.noOfStops; i++) {
+                stops.push(route.ratePerStopEach[i] || route.rate.ratePerStop || null);
+            }
+            route.ratePerStopEach = stops;
         }
-        $event.route.ratePerDrop = stops;
     }
 
-    ratePerDropAllKeyup($event) {
-        $event.route.ratePerDrop = $event.route.ratePerDrop.map(_ => $event.ratePerDrop ? Number($event.ratePerDrop) : null);
+    ratePerStopKeyup(route: Route) {
+        route.ratePerStopEach = route.ratePerStopEach.map(_ => route.rate.ratePerStop ? Number(route.rate.ratePerStop) : null);
     }
 
-    ratePerDropEachKeyup($event) {
-        $event.route.ratePerDrop[$event.index] = $event.value ? Number($event.value) : null;
+    ratePerStopEachKeyup($event: { route: Route, index: number }) {
+        $event.route.ratePerStopEach[$event.index] = $event.route.ratePerStopEach[$event.index]
+            ? Number($event.route.ratePerStopEach[$event.index])
+            : null;
     }
 
     constructor(
