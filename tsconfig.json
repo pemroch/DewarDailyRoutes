@@ -18,7 +18,7 @@
             "dom"
         ],
         "paths": {
-            "@layout/*": ["./src/app/layout/*"],
+            "@core/*": ["./src/app/core/*"],
             "@settings/*": ["./src/app/settings/*"],
             "@shared/*": ["./src/app/shared/*"],
         }

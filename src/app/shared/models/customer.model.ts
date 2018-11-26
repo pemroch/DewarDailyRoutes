@@ -1,5 +1,5 @@
 export interface Customer {
     id: string;
-    isActive: boolean;
+    isActive?: boolean;
     name: string;
 }

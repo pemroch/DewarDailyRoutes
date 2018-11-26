@@ -1,4 +1,3 @@
-// Modules
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -14,25 +13,32 @@ import {
     MatMenuModule,
     MatNativeDateModule,
     MatSelectModule,
+    MatSidenavModule,
     MatSliderModule,
     MatSortModule,
-    MatTableModule
+    MatTableModule,
+    MatToolbarModule
 } from '@angular/material';
 import { SharedModule } from '@shared/shared.module';
 import { RouterModule } from '@angular/router';
-// Module Services
+
+import { SharedRoutesService } from './services/shared-routes.service';
 import { RoutesTableService } from './services/routes-table.service';
-// Module Containers
-import { RoutesContainerComponent } from './containers/routes-container/routes-container.component';
-import { RoutesDialogContainerComponent } from './containers/routes-dialog-container/routes-dialog-container.component';
-import { UploadRoutesDialogContainerComponent } from './containers/upload-routes-dialog-container/upload-routes-dialog-container.component';
-// Mogule Components
-import { RoutesTableComponent } from './components/routes-table/routes-table.component';
-import { RoutesTableFilterComponent } from './components/routes-table-filter/routes-table-filter.component';
-import { RoutesDialogComponent } from './components/routes-dialog/routes-dialog.component';
-import { RoutesDialogLoadingComponent } from './components/routes-dialog-loading/routes-dialog-loading.component';
-import { RoutesMenuBtnComponent } from './components/routes-menu-btn/routes-menu-btn.component';
-import { UploadRoutesDialogComponent } from './components/upload-routes-dialog/upload-routes-dialog.component';
+
+import { RoutesComponent } from './routes.component';
+import { ToolBarComponent } from './toolbar.component';
+import { AddEditDialogComponent } from './add-edit-dialog.component';
+import { UploadDialogComponent } from './upload-dialog.component';
+import { RoutesTableComponent } from './routes-table.component';
+import { SearchComponent } from './search.component';
+
+import { ToolbarMenuComponent } from './components/toolbar-menu.component';
+import { AddEditFormComponent } from './components/add-edit-form.component';
+import { UploadFormComponent } from './components/upload-form.component';
+import { TableFilterComponent } from './components/table-filter.component';
+import { TableComponent } from './components/table.component';
+import { SearchFormComponent } from './components/search-form.component';
+
 
 @NgModule({
     imports: [
@@ -49,26 +55,36 @@ import { UploadRoutesDialogComponent } from './components/upload-routes-dialog/u
         MatMenuModule,
         MatNativeDateModule,
         MatSelectModule,
+        MatSidenavModule,
         MatSliderModule,
         MatSortModule,
         MatTableModule,
+        MatToolbarModule,
         SharedModule,
         RouterModule.forChild([
-            { path: '', component: RoutesContainerComponent }
+            { path: '', component: RoutesComponent, children: [
+                { path: 'search', component: SearchComponent }
+            ] },
         ])
     ],
     declarations: [
-        RoutesContainerComponent,
-        RoutesDialogContainerComponent,
+        RoutesComponent,
+        ToolBarComponent,
+        ToolbarMenuComponent,
+        AddEditDialogComponent,
+        AddEditFormComponent,
+        UploadDialogComponent,
+        UploadFormComponent,
         RoutesTableComponent,
-        RoutesDialogComponent,
-        RoutesDialogLoadingComponent,
-        RoutesMenuBtnComponent,
-        RoutesTableFilterComponent,
-        UploadRoutesDialogContainerComponent,
-        UploadRoutesDialogComponent
+        TableFilterComponent,
+        TableComponent,
+        SearchComponent,
+        SearchFormComponent
     ],
-    entryComponents: [RoutesDialogContainerComponent, UploadRoutesDialogContainerComponent],
-    providers: [RoutesTableService]
+    entryComponents: [AddEditDialogComponent, UploadDialogComponent],
+    providers: [
+        SharedRoutesService,
+        RoutesTableService,
+    ]
 })
 export class RoutesModule { }

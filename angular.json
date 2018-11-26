@@ -130,6 +130,17 @@
         "@schematics/angular:component": {
             "inlineTemplate": true,
             "inlineStyle": true
+        },
+        "@schematics/angular": {
+            "module": {
+                "spec": false
+            },
+            "component": {
+                "spec": false
+            },
+            "service": {
+                "spec": false
+            }
         }
     }
 }

@@ -1,5 +1,6 @@
 export interface PickUpItem {
     id: string;
-    isActive: boolean;
+    isActive?: boolean;
     name: string;
+    ratePerItem: number;
 }
