@@ -8,6 +8,3 @@ export * from './customer.model';
 export * from './pick-up-item.model';
 export * from './comment.model';
 export * from './route.model';
-export * from './route-address.model';
-export * from './route-confirmation.model';
-export * from './route-confirmation.model';

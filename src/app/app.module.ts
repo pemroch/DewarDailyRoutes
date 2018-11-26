@@ -9,7 +9,7 @@ import { GestureConfig } from '@angular/material';
 import { RouterModule } from '@angular/router';
 import { SharedModule } from '@shared/shared.module';
 // Layout Services
-import { LayoutService } from './layout/services/layout.service';
+import { CoreService } from '@core/shared';
 // Module Components
 import { AppComponent } from './app.component';
 
@@ -33,19 +33,18 @@ const firebaseConfig = {
         BrowserAnimationsModule,
         AngularFireAuthModule,
         AngularFireModule.initializeApp(firebaseConfig),
-        AngularFirestoreModule.enablePersistence(),
         AngularFirestoreModule,
         RouterModule.forRoot([
             { path: '', redirectTo: 'app', pathMatch: 'full' },
             { path: 'login', loadChildren: './login/login.module#LoginModule' },
-            { path: 'app', loadChildren: './layout/layout.module#LayoutModule' },
+            { path: 'app', loadChildren: './core/core.module#CoreModule' },
             { path: '**', redirectTo: 'app', pathMatch: 'full' }
         ], { useHash: true }),
         SharedModule.forRoot()
     ],
     bootstrap: [AppComponent],
     providers: [
-        LayoutService,
+        CoreService,
         { provide: HAMMER_GESTURE_CONFIG, useClass: GestureConfig }
     ]
 })
